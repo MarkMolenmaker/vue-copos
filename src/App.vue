@@ -1,21 +1,23 @@
 <template>
   <div v-if="!session.active" class="overlay">
       <div class="container input">
-          <span class="title">Voer het ladenummer in</span>
-          <div class="line">
-              <input type="text" v-model="input"><span class="light-blue color-black">Annuleren</span><span class="gray">OK</span>
-          </div>
+          <span class="title">{{ session.status.description }}</span>
+          <form class="line" @submit.prevent="handleInputReceived('ACTION', 'ENTER')">
+              <input class="input" :type="session.status.type !== 'ENTER_PASSWORD' ? 'text' : 'password'" v-model="input" v-focus >
+              <input class="button light-blue color-black" type="button" value="Annuleren" @click="this.$store.dispatch('logout')" />
+              <input class="button light-gray" type="submit" value="OK" />
+          </form>
       </div>
       <NumpadPanel />
   </div>
   <main class="default-main">
       <TransactionDetailsPanel />
-      <router-view v-if="session" />
+      <router-view v-if="session.active" />
   </main>
   <footer>
-      <div><span>{{ session.state }}</span></div>
+      <div><span>{{ session.status.title }}</span></div>
       <div>
-          <span v-if="session.pay_desk">Lade: {{ session.pay_desk.number }}</span>
+          <span v-if="session.cash_register">Lade: {{ session.cash_register.number }}</span>
           <span>CO2805HV003FOvirtual (WEB)</span>
           <span v-if="session.user">{{ session.user.code }}</span>
           <span>{{ datetime }}</span>
@@ -29,20 +31,18 @@ import {mapGetters} from "vuex";
 import TransactionDetailsPanel from "@/components/TransactionDetails/TransactionDetailsPanel.vue";
 import NumpadButton from "@/components/Numpad/NumpadButton.vue";
 import NumpadPanel from "@/components/Numpad/NumpadPanel.vue";
+import {fetchProductBySku, getRandomSku, Product} from "@/util";
 
 export default {
     components: {NumpadPanel, NumpadButton, TransactionDetailsPanel },
     data () { return { datetime: "", input: "" }},
     created () { setInterval(this.currentDateTime, 1000); this.currentDateTime() },
     methods: {
-        currentDateTime () { this.datetime = new Date().toLocaleString('nl') }
-    },
-    computed: { ...mapGetters([ 'session' ]) },
-    mounted() {
-        this.emitter.on('numpad-button-pressed', options => {
-            if (options.type === 'INPUT') this.input += options.value
-            else if (options.type === 'ACTION')
-                switch (options.value) {
+        currentDateTime () { this.datetime = new Date().toLocaleString('nl') },
+        handleInputReceived (type, value) {
+            if (type === 'INPUT') this.input += value
+            else if (type === 'ACTION')
+                switch (value) {
                     case 'KEY':
                         break
                     case 'BCK':
@@ -52,8 +52,24 @@ export default {
                         this.input = ""
                         break
                     case 'ENTER':
-                        console.log(this.input)
+                        if (this.$store.dispatch('continueSession',  this.input)) this.input = ""
                 }
+        }
+    },
+    computed: { ...mapGetters([ 'session' ]) },
+    mounted() {
+        this.emitter.on('numpad-button-pressed', ({ type, value }) => this.handleInputReceived(type, value))
+        // Handle the event of the spacebar being released
+        window.addEventListener('keyup', async (e) => {
+            if (e.code === 'Space') {
+                const randomSku = getRandomSku()
+                const online = await fetchProductBySku(randomSku)
+                if (!online) return // @TODO: show popup: ongeldig/onbekend artikel
+                this.$store.commit('addProductToCheckout', {
+                    product: new Product(online.sku, online.name, online.listPrice.value),
+                    quantity: 1
+                })
+            }
         })
     }
 }
@@ -99,19 +115,22 @@ export default {
       width: 100%
       span.title
         font-size: 1.75rem
-      div.line
+      form.line
         display: grid
         align-items: center
         gap: .5rem
         grid-template-columns: 8fr 1fr 1fr
-        *
+        input
           display: flex
           justify-content: center
           align-items: center
-        span
+        input.button
+          border: none
+          border-radius: 0
           height: 3rem
-        span:hover
+        input.button:hover
           cursor: pointer
-        input
+        input.input
           height: 2.5rem
+          font-size: 1.5rem
 </style>

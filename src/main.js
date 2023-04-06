@@ -10,4 +10,5 @@ const emitter = mitt()
 
 const app = createApp(App)
 app.config.globalProperties.emitter = emitter
+app.directive('focus', { mounted(el) { el.focus() } })
 app.use(store).use(router).mount('#app')

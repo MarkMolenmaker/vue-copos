@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="lines">
-            <TransactionDetailsSecondaryLine :first="amount.size" second="Totaal" :third="amount.total" bold />
+            <TransactionDetailsSecondaryLine :first="checkout.inventory.length" second="Totaal" :third="amount.total" bold />
             <TransactionDetailsSecondaryLine second="Betaald" :third="amount.payed" normal />
             <TransactionDetailsSecondaryLine second="Terug" :third="amount.change" large-bold />
         </div>
@@ -17,11 +17,13 @@
 <script>
 import TransactionDetailsSecondaryLine from "@/components/TransactionDetails/TransactionDetailsSecondaryLine.vue";
 import TransactionDetailsSecondaryButton from "@/components/TransactionDetails/TransactionDetailsSecondaryButton.vue";
+import {mapGetters} from "vuex";
 
 export default {
     name: "TransactionDetailsSecondary",
     components: {TransactionDetailsSecondaryButton, TransactionDetailsSecondaryLine},
     computed: {
+        ...mapGetters([ 'checkout' ]),
         amount () {
             const size = 0
             const total = 0

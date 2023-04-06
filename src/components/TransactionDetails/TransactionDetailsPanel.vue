@@ -1,22 +1,43 @@
 <template>
     <section class="information">
-        <div class="line title"><span>{{ session.title }}</span></div>
-        <div class="container primary"></div>
+        <div class="line title"><span>{{ checkout.title }}</span></div>
+        <div class="container primary">
+            <a v-for="entry in checkout.inventory">
+                <div class="line">
+                    <span class="quantity">{{ entry.quantity }}</span>
+                    <span class="name">{{ entry.product.name }}</span>
+                    <span class="price">{{ entry.quantity * entry.product.price }}</span>
+                </div>
+            </a>
+        </div>
         <TransactionDetailsSecondary />
-        <div class="line input"><span>Invoer</span><input type="text" ></div>
+        <form class="line" @submit.prevent="scanProduct"><span>Invoer</span><input type="text" v-model="input" :disabled="!session.active" /></form>
     </section>
 </template>
 
 <script>
 import {mapGetters} from "vuex";
 import TransactionDetailsSecondary from "@/components/TransactionDetails/TransactionDetailsSecondary.vue";
+import {fetchProductBySku, Product} from "@/util";
 
 export default {
     name: "TransactionDetailsPanel",
+    data () { return { input: "" } },
+    methods: {
+        async scanProduct() {
+            const online = await fetchProductBySku(this.input)
+            this.input = ""
+            if (!online) return // @TODO: show popup: ongeldig/onbekend artikel
+            this.$store.commit('addProductToCheckout', {
+                product: new Product(online.sku, online.name, online.listPrice.value),
+                quantity: 1
+            })
+        }
+    },
     components: {TransactionDetailsSecondary},
     computed: {
         ...mapGetters([
-            'session'
+            'checkout', "session"
         ])
     }
 }
@@ -31,12 +52,12 @@ section.information
         background: white
         color: black
         border: solid 1px var(--color-background-dark)
-    div.line
+    .line
         border: solid 1px white
         display: flex
         font-size: 1.15rem
         align-items: center
-    div.line.input
+    form
         span
             font-weight: normal
         input
