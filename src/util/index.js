@@ -1,5 +1,3 @@
-import sku from "@/util/sku";
-
 export class Product {
     constructor(sku, name, price) {
         this._sku = sku
@@ -35,9 +33,19 @@ export async function fetchProductBySku(sku) {
         .catch(() => null)
 }
 
-export function getRandomSku() {
-    // Get a random number between 0 and the length of the skuCodes array
-    const random = Math.floor(Math.random() * sku.codes.length)
-    // Return the skuCode at the random index
-    return sku.codes[random]
+export async function fetchRandomProduct() {
+    // Fetch the total amount of products
+    const date = new Date().toISOString().slice(0, 10)
+    const total = await fetch('https://api.coop.nl/INTERSHOP/rest/WFS/COOP-COOPBase-Site/-;loc=nl_NL;cur=EUR/products?amount=0&offset=0&_date=' + date, {method: 'GET'})
+        .then(response => response.json())
+        .then(result => result['total'])
+        .catch(() => null)
+    // Get a random number between 0 and the total
+    const random = Math.floor(Math.random() * total - 1);
+    // Fetch the url of the product with the random number as the offset
+    const sku = await fetch('https://api.coop.nl/INTERSHOP/rest/WFS/COOP-COOPBase-Site/-;loc=nl_NL;cur=EUR/products?amount=1&offset=' + random + '&_date=' + date, {method: 'GET'})
+        .then(response => response.json())
+        .then(result => result['elements'][0]['uri'].replace("COOP-COOPBase-Site/-;loc=nl_NL;cur=EUR/products/", ""))
+        .catch(() => null)
+    return await fetchProductBySku(sku)
 }

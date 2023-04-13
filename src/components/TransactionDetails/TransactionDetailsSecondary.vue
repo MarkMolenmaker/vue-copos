@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="lines">
-            <TransactionDetailsSecondaryLine :first="checkout.inventory.length" second="Totaal" :third="amount.total" bold />
+            <TransactionDetailsSecondaryLine :first="String(checkout.inventory.length)" second="Totaal" :third="amount.total" bold />
             <TransactionDetailsSecondaryLine second="Betaald" :third="amount.payed" normal />
             <TransactionDetailsSecondaryLine second="Terug" :third="amount.change" large-bold />
         </div>

@@ -31,7 +31,7 @@ import {mapGetters} from "vuex";
 import TransactionDetailsPanel from "@/components/TransactionDetails/TransactionDetailsPanel.vue";
 import NumpadButton from "@/components/Numpad/NumpadButton.vue";
 import NumpadPanel from "@/components/Numpad/NumpadPanel.vue";
-import {fetchProductBySku, getRandomSku, Product} from "@/util";
+import {fetchProductBySku, fetchRandomProduct, Product} from "@/util";
 
 export default {
     components: {NumpadPanel, NumpadButton, TransactionDetailsPanel },
@@ -62,8 +62,7 @@ export default {
         // Handle the event of the spacebar being released
         window.addEventListener('keyup', async (e) => {
             if (e.code === 'Space') {
-                const randomSku = getRandomSku()
-                const online = await fetchProductBySku(randomSku)
+                const online = await fetchRandomProduct()
                 if (!online) return // @TODO: show popup: ongeldig/onbekend artikel
                 this.$store.commit('addProductToCheckout', {
                     product: new Product(online.sku, online.name, online.listPrice.value),

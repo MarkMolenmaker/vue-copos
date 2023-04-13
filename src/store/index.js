@@ -52,9 +52,7 @@ export default createStore({
 
             /** DEVELOPMENT **/
             title: 'Welkom',
-            inventory: [
-                { product: new Product('5000112646627', 'Coca-Cola Regular', 2.51), quantity: 1 },
-            ]
+            inventory: [ ]
         }
     },
     getters: {
