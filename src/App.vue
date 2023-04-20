@@ -31,7 +31,7 @@ import {mapGetters} from "vuex";
 import TransactionDetailsPanel from "@/components/TransactionDetails/TransactionDetailsPanel.vue";
 import NumpadButton from "@/components/Numpad/NumpadButton.vue";
 import NumpadPanel from "@/components/Numpad/NumpadPanel.vue";
-import {fetchProductBySku, fetchRandomProduct, Product} from "@/util";
+import {fetchRandomProduct, Product} from "@/util";
 
 export default {
     components: {NumpadPanel, NumpadButton, TransactionDetailsPanel },
