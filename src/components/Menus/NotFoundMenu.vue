@@ -12,7 +12,7 @@ export default {
         return {
             buttons: [ // 0-7 : 0-4
                 new Button('Menu niet gevonden', 'red', '/', 3, 1, 3),
-                new Button('Terug naar hoofdmenu', 'gray', '/',4, 1, 3)
+                new Button('Terug naar vorige menu', 'gray', 'PREVIOUS_MENU',4, 1, 3)
             ]
         }
     },
