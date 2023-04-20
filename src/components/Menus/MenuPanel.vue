@@ -2,7 +2,7 @@
     <section>
         <div class="row" :style="{ height: 100 / rows + '%' }" v-for="row in buttonGrid" :key="row">
             <div class="button" v-for="button in row" :key="button" :style="{ width: (100 / rowSize) * (button !== null ? button.size : 1) + '%'}">
-                <router-link v-if="button !== null" :class="button.color" :to="button.link">
+                <router-link v-if="button !== null" :class="button.color" :to="buttonRouteTo(button.link)">
                     {{ button.title }}
                 </router-link>
                 <a v-else class="empty" />
@@ -20,6 +20,13 @@ export default {
         rows: { type: String, required: true },
         rowSize: { type: String, required: true },
         buttons: { type: Array[Button], required: true }
+    },
+    methods: {
+        buttonRouteTo (link) {
+            if (link[0] === '/') return link
+            else if (link === 'PREVIOUS_MENU') return this.$router.options.history.state.back
+            else return '/'
+        }
     },
     computed: {
         buttonGrid () {

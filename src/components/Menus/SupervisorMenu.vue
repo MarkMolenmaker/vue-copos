@@ -11,7 +11,7 @@ export default {
     data () {
         return {
             buttons: [ // 0-7 : 0-4
-                new Button('Terug', 'gray', '/', 0, 4, 1),
+                new Button('Terug', 'gray', 'PREVIOUS_MENU', 0, 4, 1),
 
                 new Button('Non scan menu', 'blue', '/non_scan_menu', 1, 3, 1),
                 new Button('Kassa PLU\'s', 'green', '/kassa_plus', 1, 4, 1),
