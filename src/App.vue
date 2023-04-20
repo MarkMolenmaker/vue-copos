@@ -18,7 +18,7 @@
       <div><span>{{ session.status.title }}</span></div>
       <div>
           <span v-if="session.cash_register">Lade: {{ session.cash_register.number }}</span>
-          <span>CO2805HV003FOvirtual (WEB)</span>
+          <span>CO2805HV003FO-virtual (WEB)</span>
           <span v-if="session.user">{{ session.user.code }}</span>
           <span>{{ datetime }}</span>
           <span>(v.0.0.1.20230401.001)</span>
