@@ -6,6 +6,10 @@
                 <router-link v-else-if="button.link[0] === '/'" :class="button.color" :to="button.link">
                     {{ button.title }}
                 </router-link>
+                <a v-else-if="integratedNumpad && button.link === 'INTEGRATED_NUMPAD'"
+                   class="integrated-numpad-wrapper">
+                        <IntegratedNumpadPanel />
+                </a>
                 <a v-else :class="button.color" @click="action(button.link)">
                     {{ button.title }}
                 </a>
@@ -16,13 +20,16 @@
 
 <script>
 import {Button} from "@/util/Button";
+import IntegratedNumpadPanel from "@/components/Numpad/Integrated/IntegratedNumpadPanel.vue";
 
 export default {
     name: "MenuPanel",
+    components: {IntegratedNumpadPanel},
     props: {
         rows: { type: String, required: true },
         rowSize: { type: String, required: true },
-        buttons: { type: Array[Button], required: true }
+        buttons: { type: Array[Button], required: true },
+        integratedNumpad: { type: Boolean }
     },
     methods: {
         action (link) {
@@ -53,6 +60,10 @@ export default {
                     grid[button.row].splice(button.position + (grid[button.row].length - this.rowSize) + 1, button.size - 1)
                 }
             })
+            if (this.integratedNumpad) {
+                grid[5][0] = new Button('', 'transparent', 'INTEGRATED_NUMPAD', null, null, 3)
+                grid[5].splice(1, 2)
+            }
             return grid
         }
     }
@@ -82,7 +93,10 @@ section
             align-items: center
             height: 100%
             width: 100%
-
-    a:hover:not(.empty)
+        .integrated-numpad-wrapper
+            display: flex
+            justify-content: flex-start
+            align-items: flex-start
+    a:hover:not(.empty):not(.integrated-numpad-wrapper)
         cursor: pointer
 </style>

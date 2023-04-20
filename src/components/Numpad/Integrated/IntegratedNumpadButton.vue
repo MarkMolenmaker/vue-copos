@@ -1,23 +1,28 @@
 <template>
-  <span @click="handleClick">{{ num }}</span>
+  <span @click="handleClick" :class="{double: double}">{{ num }}</span>
 </template>
 
 <script>
 export default {
-    name: "NumpadButton",
+    name: "IntegratedNumpadButton",
     props: {
-        num: { type: String, required: true }
+        num: { type: String, required: true },
+        double: { type: Boolean },
     },
     methods: {
         handleClick() {
             const options = { type: 'ACTION', value: this.num }
-            if (!isNaN(this.num) ) {
+            if (this.num === '00') {
+                options.type = 'INPUT'
+                options.value = this.num
+            }
+            else if (!isNaN(this.num) ) {
                 options.type = 'INPUT'
                 options.value = Number(this.num)
             }
-            this.emitter.emit('numpad-button-pressed', options)
+            this.emitter.emit('integrated-numpad-button-pressed', options)
         }
-    }, emits: [ 'keyPress' ]
+    }, emits: [ 'integrated-numpad-button-pressed' ]
 }
 </script>
 
@@ -27,14 +32,16 @@ span
   justify-content: center
   align-items: center
   text-align: center
-  padding: 1rem
-  margin: .15rem
   color: black
-  background: var(--color-light-blue)
+  margin: .1rem
+  background: var(--color-gray)
 
   -webkit-user-select: none /* Safari */
   -ms-user-select: none /* IE 10 and IE 11 */
   user-select: none /* Standard syntax */
+.double
+  height: calc(200% - .2rem)
+  z-index: 2
 span:hover
   cursor: pointer
 </style>

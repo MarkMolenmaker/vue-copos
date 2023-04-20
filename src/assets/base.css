@@ -5,6 +5,7 @@
   --color-background-dark: #2157b9;
 
   --color-light-blue: #69a4da;
+  --color-gray: #9ba8ca;
 
   --color-border: white;
   --color-border-focus: black;
@@ -34,7 +35,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.gray { background-color: #9ba8ca
+.gray { background-color: var(--color-gray)
 }
 .red { background-color: #e84a2d
 }

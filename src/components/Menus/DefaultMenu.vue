@@ -1,5 +1,5 @@
 <template>
-    <MenuPanel rows="8" row-size="5" :buttons="buttons" />
+    <MenuPanel rows="8" row-size="5" :buttons="buttons" integrated-numpad />
 </template>
 
 <script>

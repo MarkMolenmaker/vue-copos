@@ -8,7 +8,7 @@
               <input class="button light-gray" type="submit" value="OK" />
           </form>
       </div>
-      <NumpadPanel />
+      <PopupNumpadPanel />
   </div>
   <main class="default-main">
       <TransactionDetailsPanel />
@@ -29,12 +29,12 @@
 <script>
 import {mapGetters} from "vuex";
 import TransactionDetailsPanel from "@/components/TransactionDetails/TransactionDetailsPanel.vue";
-import NumpadButton from "@/components/Numpad/NumpadButton.vue";
-import NumpadPanel from "@/components/Numpad/NumpadPanel.vue";
+import PopupNumpadButton from "@/components/Numpad/Popup/PopupNumpadButton.vue";
+import PopupNumpadPanel from "@/components/Numpad/Popup/PopupNumpadPanel.vue";
 import {fetchRandomProduct, Product} from "@/util";
 
 export default {
-    components: {NumpadPanel, NumpadButton, TransactionDetailsPanel },
+    components: {PopupNumpadPanel, PopupNumpadButton, TransactionDetailsPanel },
     data () { return { datetime: "", input: "" }},
     created () { setInterval(this.currentDateTime, 1000); this.currentDateTime() },
     methods: {
@@ -58,9 +58,10 @@ export default {
     },
     computed: { ...mapGetters([ 'session' ]) },
     mounted() {
-        this.emitter.on('numpad-button-pressed', ({ type, value }) => this.handleInputReceived(type, value))
+        this.emitter.on('popup-numpad-button-pressed', ({ type, value }) => this.handleInputReceived(type, value))
         // Handle the event of the spacebar being released
         window.addEventListener('keyup', async (e) => {
+            if (!this.session.active) return
             if (e.code === 'Space') {
                 const online = await fetchRandomProduct()
                 if (!online) return // @TODO: show popup: ongeldig/onbekend artikel

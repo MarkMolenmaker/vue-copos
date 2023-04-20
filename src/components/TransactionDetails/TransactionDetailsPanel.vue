@@ -32,6 +32,23 @@ export default {
                 product: new Product(online.sku, online.name, online.listPrice.value),
                 quantity: 1
             })
+        },
+        handleInputReceived (type, value) {
+            if (type === 'INPUT') this.input += value
+            else if (type === 'ACTION')
+                switch (value) {
+                    case '*':
+                        this.input += "[*]"
+                        break
+                    case 'BCK':
+                        this.input = this.input.substring(0, this.input.length - 1)
+                        break
+                    case ',':
+                        this.input += ","
+                        break
+                    case 'ENTER':
+                        if (this.scanProduct()) this.input = ""
+                }
         }
     },
     components: {TransactionDetailsSecondary},
@@ -39,6 +56,9 @@ export default {
         ...mapGetters([
             'checkout', "session"
         ])
+    },
+    mounted() {
+        this.emitter.on('integrated-numpad-button-pressed', ({ type, value }) => this.handleInputReceived(type, value))
     }
 }
 </script>
