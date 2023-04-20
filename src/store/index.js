@@ -53,7 +53,8 @@ export default createStore({
             /** DEVELOPMENT **/
             title: 'Welkom',
             inventory: [ ]
-        }
+        },
+        routerHistory: []
     },
     getters: {
         session (state) {
@@ -61,6 +62,11 @@ export default createStore({
         },
         checkout (state) {
             return state.checkout
+        },
+        previousRoute (state) {
+            const historyLen = state.routerHistory.length
+            if (historyLen === 0) return '/'
+            return state.routerHistory[historyLen - 1]
         }
     },
     mutations: {
@@ -82,6 +88,9 @@ export default createStore({
         },
         addProductToCheckout (state, payload) {
             state.checkout.inventory.push(payload)
+        },
+        clearRouteHistory (state) {
+            state.routerHistory.splice(0)
         }
     },
     actions: {
@@ -119,6 +128,9 @@ export default createStore({
         },
         addProductToCheckout ({ commit }, payload) {
             commit('addProductToCheckout', payload)
+        },
+        clearRouteHistory({ commit }) {
+            commit('clearRouteHistory')
         }
     }
 })
