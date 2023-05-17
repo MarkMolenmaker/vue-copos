@@ -2,7 +2,11 @@
     <section>
         <div class="row" :style="{ height: 100 / rows + '%' }" v-for="row in buttonGrid" :key="row">
             <div class="button" v-for="button in row" :key="button" :style="{ width: (100 / rowSize) * (button !== null ? button.size : 1) + '%'}">
-                <a v-if="button === null || (this.checkoutTotalQuantity > 0 && button.link === '/afmelden')" class="empty" />
+                <a v-if="
+                    button === null
+                    || (checkoutTotalQuantity > 0 && button.link === '/afmelden')
+                    || (checkoutTotalQuantity <= 0 && button.link === '/afrekenen')
+                " class="empty" />
                 <router-link v-else-if="button.link[0] === '/'" :class="button.color" :to="button.link">
                     {{ button.title }}
                 </router-link>
