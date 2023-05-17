@@ -8,7 +8,7 @@
             <span class="right">Waarde</span>
         </div>
         <div v-else />
-        <div class="container primary">
+        <div class="container primary" :class="{training: trainingMode }">
             <a v-for="entry in checkout.inventory">
                 <div class="line product-line">
                     <span>{{ entry.quantity }}</span>
@@ -78,7 +78,7 @@ export default {
     components: {TransactionDetailsSecondary},
     computed: {
         ...mapGetters([
-            'checkout', 'session', 'checkoutTotalQuantity'
+            'checkout', 'session', 'checkoutTotalQuantity', 'trainingMode'
         ])
     },
     mounted() {
@@ -96,6 +96,8 @@ section.information
         background: white
         color: black
         border: solid 1px var(--color-background-dark)
+    div.container.training
+        background: var(--color-green)
     .line
         border: solid 1px white
         display: flex
@@ -106,6 +108,7 @@ section.information
     .line.product-line
         display: grid
         grid-template-columns: 2fr 10fr 2fr 2fr
+        border-color: transparent
         border-bottom-color: var(--color-gray)
     .line.description
         display: grid

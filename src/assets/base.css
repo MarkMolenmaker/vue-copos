@@ -6,6 +6,7 @@
 
   --color-light-blue: #69a4da;
   --color-gray: #9ba8ca;
+  --color-green: #4eb845;
 
   --color-border: white;
   --color-border-focus: black;
@@ -41,7 +42,7 @@ body {
 }
 .blue { background-color: #59a8c3
 }
-.green { background-color: #4eb845
+.green { background-color: var(--color-green)
 }
 .orange { background-color: #ed692a
 }

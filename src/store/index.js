@@ -41,13 +41,15 @@ export default createStore({
             // status: STATUS.INITIAL,
             // active: false,
             // cash_register: undefined,
-            // user: undefined
+            // user: undefined,
+            // training_mode: false
 
             /** DEVELOPMENT **/
             status: STATUS.SALE_ASSEMBLY,
             active: true,
             cash_register: { name: 'Kassa 1', number: 1 },
-            user: { name: 'Mark Molenmaker', code: '1081140', password: '0000' }
+            user: { name: 'Mark Molenmaker', code: '1081140', password: '0000' },
+            training_mode: false
         },
         checkout: {
             /** PRODUCTION **/
@@ -93,6 +95,10 @@ export default createStore({
                 Math.abs(getters.checkoutTotalPrice - getters.checkoutTotalPayed) : 0
         },
 
+        trainingMode (state) {
+            return state.session.training_mode
+        },
+
         previousRoute (state) {
             const historyLen = state.routerHistory.length
             if (historyLen === 0) return '/'
@@ -129,6 +135,10 @@ export default createStore({
         },
         clearInventory (state) {
             state.checkout.inventory.splice(0)
+        },
+
+        setTrainingMode (state, payload) {
+            state.session.training_mode = payload
         },
 
         clearRouteHistory (state) {
@@ -185,6 +195,11 @@ export default createStore({
         duplicateLastAddedProduct ({ commit }, payload) {
             commit('duplicateLastAddedProduct', payload)
         },
+
+        toggleTrainingMode ({ commit }) {
+            commit('setTrainingMode', !this.state.session.training_mode)
+        },
+
         clearRouteHistory({ commit }) {
             commit('clearRouteHistory')
         }
