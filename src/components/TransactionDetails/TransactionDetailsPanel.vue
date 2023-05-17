@@ -1,15 +1,22 @@
 <template>
     <section class="information">
         <div class="line title"><span>{{ checkout.title }}</span></div>
+        <div class="line description" v-if="checkoutTotalQuantity > 0">
+            <span>Aantal</span>
+            <span>Omschrijving</span>
+            <span>Prijs</span>
+            <span class="right">Waarde</span>
+        </div>
+        <div v-else />
         <div class="container primary">
             <a v-for="entry in checkout.inventory">
-                <div class="line border-bottom-gray">
-                    <span class="quantity">{{ entry.quantity }}</span>
-                    <span class="name">{{ entry.product.name }}</span>
-                    <span class="price">{{
+                <div class="line product-line">
+                    <span>{{ entry.quantity }}</span>
+                    <span>{{ entry.product.name }}</span>
+                    <span>{{
                             (Math.round(entry.product.price * 100) / 100).toFixed(2).replace('.', ',')
                         }}</span>
-                    <span class="value">{{
+                    <span class="right">{{
                             (Math.round(entry.quantity * entry.product.price * 100) / 100).toFixed(2).replace('.', ',')
                         }}</span>
                 </div>
@@ -71,7 +78,7 @@ export default {
     components: {TransactionDetailsSecondary},
     computed: {
         ...mapGetters([
-            'checkout', 'session'
+            'checkout', 'session', 'checkoutTotalQuantity'
         ])
     },
     mounted() {
@@ -84,21 +91,26 @@ export default {
 section.information
     display: grid
     gap: 2px
-    grid-template-rows: 5fr 70fr 20fr 5fr
+    grid-template-rows: 5fr auto 70fr 20fr 5fr
     div.container
         background: white
         color: black
         border: solid 1px var(--color-background-dark)
     .line
         border: solid 1px white
-        display: grid
-        grid-template-columns: 1fr 8fr 2fr 2fr
+        display: flex
         font-size: 1.15rem
         align-items: center
-        .value
+        .right
             text-align: right
-    .line.border-bottom-gray
+    .line.product-line
+        display: grid
+        grid-template-columns: 2fr 10fr 2fr 2fr
         border-bottom-color: var(--color-gray)
+    .line.description
+        display: grid
+        grid-template-columns: 2fr 10fr 2fr 2fr
+        border: none
     form
         span
             font-weight: normal
