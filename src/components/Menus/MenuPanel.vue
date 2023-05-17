@@ -2,7 +2,7 @@
     <section>
         <div class="row" :style="{ height: 100 / rows + '%' }" v-for="row in buttonGrid" :key="row">
             <div class="button" v-for="button in row" :key="button" :style="{ width: (100 / rowSize) * (button !== null ? button.size : 1) + '%'}">
-                <a v-if="button === null" class="empty" />
+                <a v-if="button === null || (this.checkoutTotalQuantity > 0 && button.link === '/afmelden')" class="empty" />
                 <router-link v-else-if="button.link[0] === '/'" :class="button.color" :to="button.link">
                     {{ button.title }}
                 </router-link>
@@ -21,6 +21,7 @@
 <script>
 import {Button} from "@/util/Button";
 import IntegratedNumpadPanel from "@/components/Numpad/Integrated/IntegratedNumpadPanel.vue";
+import {mapGetters} from "vuex";
 
 export default {
     name: "MenuPanel",
@@ -47,6 +48,7 @@ export default {
         }
     },
     computed: {
+        ...mapGetters(['checkoutTotalQuantity']),
         buttonGrid () {
             const grid = []
             for (let row = 0; row < Number(this.rows); row++) {
