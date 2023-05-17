@@ -11,6 +11,8 @@ const routes = [
     { path: '/supervisor_menu', component: () => import('@/components/Menus/SupervisorMenu.vue') },
     { path: '/kassa_plus', component: () => import('@/components/Menus/KassaPLUsMenu.vue') },
     { path: '/afrekenen', component: () => import('@/components/Menus/AfrekenenMenu.vue') },
+    { path: '/pay_cash', component: () => import('@/components/Menus/ActionOnly/PayCash.vue') },
+    { path: '/pay_pin', component: () => import('@/components/Menus/ActionOnly/PayPin.vue') },
 
     // 404 Not Found
     { path: '/:pathMatch(.*)*', component: NotFoundMenu }

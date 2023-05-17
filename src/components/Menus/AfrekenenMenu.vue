@@ -8,6 +8,9 @@ import { Button } from "@/util/Button";
 
 export default {
     name: "AfrekenenMenu",
+    mounted() {
+        this.$store.dispatch("continueSession")
+    },
     data () {
         return {
             buttons: [ // 0-7 : 0-4

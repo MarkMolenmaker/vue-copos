@@ -27,6 +27,10 @@ const STATUS = {
     SALE_ASSEMBLY: {
         type: 'SALE_ASSEMBLY',
         title: 'Verkoop - Begin'
+    },
+    SALE_PAYMENT: {
+        type: 'SALE_PAYMENT',
+        title: 'Verkoop - Einde'
     }
 }
 
@@ -89,6 +93,10 @@ export default createStore({
         addProductToCheckout (state, payload) {
             state.checkout.inventory.push(payload)
         },
+        clearInventory (state) {
+            state.checkout.inventory.splice(0)
+        },
+
         clearRouteHistory (state) {
             state.routerHistory.splice(0)
         }
@@ -116,6 +124,17 @@ export default createStore({
                 commit('setSessionStatus', STATUS.SALE_ASSEMBLY)
                 commit('setSessionActive', true)
                 commit('setCheckoutTitle', 'Welkom')
+                return true
+            } else if (this.state.session.status.type === 'SALE_ASSEMBLY') {
+                commit('setSessionStatus', STATUS.SALE_PAYMENT)
+                commit('setSessionActive', true)
+                commit('setCheckoutTitle', 'Begin bon - ...')
+                return true
+            } else if (this.state.session.status.type === 'SALE_PAYMENT') {
+                commit('setSessionStatus', STATUS.SALE_ASSEMBLY)
+                commit('setSessionActive', true)
+                commit('setCheckoutTitle', 'Welkom')
+                commit('clearInventory')
                 return true
             }
         },
