@@ -21,6 +21,12 @@
                         }}</span>
                 </div>
             </a>
+            <a v-if="this.session.status.type === 'SALE_PAYMENT'"><div class="line product-line large-line">
+                <span>{{ checkoutTotalQuantity }}</span>
+                <span>Totaal</span>
+                <span></span>
+                <span class="right">{{ formattedTotalPrice }}</span>
+            </div></a>
         </div>
         <TransactionDetailsSecondary />
         <form class="line" @submit.prevent="handleInputReceived('ACTION', 'ENTER')"><span>Invoer</span><input type="text" v-model="input" :disabled="!session.active" /></form>
@@ -78,8 +84,11 @@ export default {
     components: {TransactionDetailsSecondary},
     computed: {
         ...mapGetters([
-            'checkout', 'session', 'checkoutTotalQuantity', 'trainingMode'
-        ])
+            'checkout', 'session', 'checkoutTotalQuantity', 'checkoutTotalPrice', 'trainingMode'
+        ]),
+        formattedTotalPrice () {
+            return (Math.round(this.checkoutTotalPrice * 100) / 100).toFixed(2).replace('.', ',')
+        }
     },
     mounted() {
         this.emitter.on('integrated-numpad-button-pressed', ({ type, value }) => this.handleInputReceived(type, value))
@@ -110,6 +119,8 @@ section.information
         grid-template-columns: 2fr 10fr 2fr 2fr
         border-color: transparent
         border-bottom-color: var(--color-gray)
+    .line.large-line
+        font-size: 1.25rem
     .line.description
         display: grid
         grid-template-columns: 2fr 10fr 2fr 2fr
