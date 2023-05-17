@@ -11,7 +11,7 @@
             </a>
         </div>
         <TransactionDetailsSecondary />
-        <form class="line" @submit.prevent="scanProduct"><span>Invoer</span><input type="text" v-model="input" :disabled="!session.active" /></form>
+        <form class="line" @submit.prevent="handleInputReceived('ACTION', 'ENTER')"><span>Invoer</span><input type="text" v-model="input" :disabled="!session.active" /></form>
     </section>
 </template>
 
@@ -49,12 +49,15 @@ export default {
                         const multiply_match = this.input.match(/(^\d+)\[\*\]$/) // 1[*]
                         const multiply_with_ean_match = this.input.match(/(^\d+)\[\*\](\d+)$/) // 1[*]871203929
 
+                        console.log(multiply_match)
+                        console.log(multiply_with_ean_match)
+
                         if (this.input === "")
                             this.$store.commit('duplicateLastAddedProduct', 1)  // Duplicate the product x amount of times
                         else if (multiply_match)
                             this.$store.commit('duplicateLastAddedProduct', multiply_match[1])  // Duplicate the product x amount of times
                         else if (multiply_with_ean_match)
-                            this.scanProduct(multiply_match[1], Number(multiply_with_ean_match[2]))
+                            this.scanProduct(multiply_with_ean_match[2], Number(multiply_with_ean_match[1]))
                         else
                             this.scanProduct(this.input)
 
