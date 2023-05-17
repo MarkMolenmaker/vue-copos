@@ -93,6 +93,14 @@ export default createStore({
         addProductToCheckout (state, payload) {
             state.checkout.inventory.push(payload)
         },
+        duplicateLastAddedProduct (state, payload) {
+            const lastEntry = state.checkout.inventory[state.checkout.inventory.length - 1]
+            const newEntry = {
+                product: lastEntry.product,
+                quantity: payload
+            }
+            state.checkout.inventory.push(newEntry)
+        },
         clearInventory (state) {
             state.checkout.inventory.splice(0)
         },
@@ -147,6 +155,9 @@ export default createStore({
         },
         addProductToCheckout ({ commit }, payload) {
             commit('addProductToCheckout', payload)
+        },
+        duplicateLastAddedProduct ({ commit }, payload) {
+            commit('duplicateLastAddedProduct', payload)
         },
         clearRouteHistory({ commit }) {
             commit('clearRouteHistory')

@@ -24,13 +24,12 @@ export default {
     name: "TransactionDetailsPanel",
     data () { return { input: "" } },
     methods: {
-        async scanProduct() {
-            const online = await fetchProductBySku(this.input)
-            this.input = ""
+        async scanProduct(ean, amount = 1) {
+            const online = await fetchProductBySku(ean)
             if (!online) return // @TODO: show popup: ongeldig/onbekend artikel
             this.$store.commit('addProductToCheckout', {
                 product: new Product(online.sku, online.name, online.listPrice.value),
-                quantity: 1
+                quantity: amount
             })
         },
         handleInputReceived (type, value) {
@@ -47,7 +46,20 @@ export default {
                         this.input += ","
                         break
                     case 'ENTER':
-                        if (this.scanProduct()) this.input = ""
+                        const multiply_match = this.input.match(/(^\d+)\[\*\]$/) // 1[*]
+                        const multiply_with_ean_match = this.input.match(/(^\d+)\[\*\](\d+)$/) // 1[*]871203929
+
+                        if (this.input === "")
+                            this.$store.commit('duplicateLastAddedProduct', 1)  // Duplicate the product x amount of times
+                        else if (multiply_match)
+                            this.$store.commit('duplicateLastAddedProduct', multiply_match[1])  // Duplicate the product x amount of times
+                        else if (multiply_with_ean_match)
+                            this.scanProduct(multiply_match[1], Number(multiply_with_ean_match[2]))
+                        else
+                            this.scanProduct(this.input)
+
+                        this.input = ""
+                        break;
                 }
         }
     },
