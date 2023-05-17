@@ -1,5 +1,5 @@
 <template>
-    <MenuPanel rows="8" row-size="5" :buttons="buttons" />
+    <MenuPanel rows="8" row-size="5" :buttons="buttons" integrated-numpad />
 </template>
 
 <script>
@@ -9,12 +9,13 @@ import {mapGetters} from "vuex";
 
 export default {
     name: "AfrekenenMenu",
-    computed: { ...mapGetters(['session'])},
+    computed: {...mapGetters(['session'])},
     mounted() {
+        this.emitter.on('integrated-numpad-button-pressed', ({ type, value }) => this.handleInputReceived(type, value))
         if (this.session.status.type !== 'SALE_PAYMENT')
             this.$store.dispatch("continueSession")
     },
-    data () {
+    data() {
         return {
             buttons: [ // 0-7 : 0-4
                 new Button('Supervisor menu', 'red', '/supervisor_menu', 1, 2, 1),
@@ -40,6 +41,27 @@ export default {
                 new Button('Contant', 'orange', '/pay_cash', 5, 3, 2),
                 new Button('Pin', 'orange', '/pay_pin', 7, 3, 2),
             ]
+        }
+    },
+    methods: {
+        handleInputReceived(type, value) {
+            if (this.session.status.type !== 'SALE_PAYMENT') return
+            if (type === 'INPUT') this.session.input += value
+            else if (type === 'ACTION')
+                switch (value) {
+                    case '*':
+                        this.session.input += "[*]"
+                        break
+                    case 'BCK':
+                        this.session.input = this.session.input.substring(0, this.session.input.length - 1)
+                        break
+                    case ',':
+                        this.session.input += ","
+                        break
+                    case 'ENTER':
+                        this.session.input = ""
+                        break;
+                }
         }
     },
     components: {MenuPanel}

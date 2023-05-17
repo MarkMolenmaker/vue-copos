@@ -5,6 +5,8 @@
 <script>
 import MenuPanel from "@/components/Menus/MenuPanel.vue";
 import { Button } from "@/util/Button";
+import {fetchProductBySku, Product} from "@/util";
+import {mapGetters} from "vuex";
 
 export default {
     name: "DefaultMenu",
@@ -29,6 +31,51 @@ export default {
                 new Button('Afrekenen', 'orange', '/afrekenen', 7, 3, 2),
             ]
         }
+    },
+    methods: {
+        async scanProduct(ean, amount = 1) {
+            const online = await fetchProductBySku(ean)
+            if (!online) return // @TODO: show popup: ongeldig/onbekend artikel
+            this.$store.commit('addProductToCheckout', {
+                product: new Product(online.sku, online.name, online.listPrice.value),
+                quantity: amount
+            })
+        },
+        handleInputReceived (type, value) {
+            if (this.session.status.type !== 'SALE_ASSEMBLY') return
+            if (type === 'INPUT') this.session.input += value
+            else if (type === 'ACTION')
+                switch (value) {
+                    case '*':
+                        this.session.input += "[*]"
+                        break
+                    case 'BCK':
+                        this.session.input = this.session.input.substring(0, this.session.input.length - 1)
+                        break
+                    case ',':
+                        this.session.input += ","
+                        break
+                    case 'ENTER':
+                        const multiply_match = this.session.input.match(/(^\d+)\[\*\]$/) // 1[*]
+                        const multiply_with_ean_match = this.session.input.match(/(^\d+)\[\*\](\d+)$/) // 1[*]871203929
+
+                        if (this.session.input === "")
+                            this.$store.commit('duplicateLastAddedProduct', 1)  // Duplicate the product x amount of times
+                        else if (multiply_match)
+                            this.$store.commit('duplicateLastAddedProduct', multiply_match[1])  // Duplicate the product x amount of times
+                        else if (multiply_with_ean_match)
+                            this.scanProduct(multiply_with_ean_match[2], Number(multiply_with_ean_match[1]))
+                        else
+                            this.scanProduct(this.session.input)
+
+                        this.session.input = ""
+                        break;
+                }
+        }
+    },
+    computed: {...mapGetters(['session'])},
+    mounted() {
+        this.emitter.on('integrated-numpad-button-pressed', ({ type, value }) => this.handleInputReceived(type, value))
     },
     components: {MenuPanel}
 }

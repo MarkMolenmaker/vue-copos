@@ -42,14 +42,16 @@ export default createStore({
             // active: false,
             // cash_register: undefined,
             // user: undefined,
-            // training_mode: false
+            // training_mode: false,
+            // input: ''
 
             /** DEVELOPMENT **/
             status: STATUS.SALE_ASSEMBLY,
             active: true,
             cash_register: { name: 'Kassa 1', number: 1 },
             user: { name: 'Mark Molenmaker', code: '1081140', password: '0000' },
-            training_mode: false
+            training_mode: false,
+            input: ''
         },
         checkout: {
             /** PRODUCTION **/
