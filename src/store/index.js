@@ -52,11 +52,13 @@ export default createStore({
         checkout: {
             /** PRODUCTION **/
             // title: 'Deze kassa is gesloten',
-            // inventory: []
+            // inventory: [],
+            // payment: 0
 
             /** DEVELOPMENT **/
             title: 'Welkom',
-            inventory: [ ]
+            inventory: [ ],
+            payment: 0
         },
         routerHistory: []
     },
@@ -64,9 +66,33 @@ export default createStore({
         session (state) {
             return state.session
         },
+
         checkout (state) {
             return state.checkout
         },
+        checkoutTotalQuantity (state) {
+            let total = 0
+            state.checkout.inventory.forEach(entry => {
+                total += Number(entry.quantity)
+            })
+            return total
+        },
+        checkoutTotalPrice (state) {
+            let total = 0
+            state.checkout.inventory.forEach(entry => {
+                total += Number(entry.product.price) * Number(entry.quantity)
+            })
+            return total
+        },
+        checkoutTotalPayed (state) {
+          return state.checkout.payment
+        },
+        checkoutTotalChange (state, getters) {
+            // 10,00 (total) - 15,00 (payment) = 5,00 (change)
+            return getters.checkoutTotalPayed >= getters.checkoutTotalPrice ?
+                Math.abs(getters.checkoutTotalPrice - getters.checkoutTotalPayed) : 0
+        },
+
         previousRoute (state) {
             const historyLen = state.routerHistory.length
             if (historyLen === 0) return '/'
