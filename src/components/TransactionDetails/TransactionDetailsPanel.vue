@@ -3,10 +3,15 @@
         <div class="line title"><span>{{ checkout.title }}</span></div>
         <div class="container primary">
             <a v-for="entry in checkout.inventory">
-                <div class="line">
+                <div class="line border-bottom-gray">
                     <span class="quantity">{{ entry.quantity }}</span>
                     <span class="name">{{ entry.product.name }}</span>
-                    <span class="price">{{ entry.quantity * entry.product.price }}</span>
+                    <span class="price">{{
+                            (Math.round(entry.product.price * 100) / 100).toFixed(2).replace('.', ',')
+                        }}</span>
+                    <span class="value">{{
+                            (Math.round(entry.quantity * entry.product.price * 100) / 100).toFixed(2).replace('.', ',')
+                        }}</span>
                 </div>
             </a>
         </div>
@@ -86,9 +91,14 @@ section.information
         border: solid 1px var(--color-background-dark)
     .line
         border: solid 1px white
-        display: flex
+        display: grid
+        grid-template-columns: 1fr 8fr 2fr 2fr
         font-size: 1.15rem
         align-items: center
+        .value
+            text-align: right
+    .line.border-bottom-gray
+        border-bottom-color: var(--color-gray)
     form
         span
             font-weight: normal
