@@ -5,11 +5,14 @@
 <script>
 import MenuPanel from "@/components/Menus/MenuPanel.vue";
 import { Button } from "@/util/Button";
+import {mapGetters} from "vuex";
 
 export default {
     name: "AfrekenenMenu",
+    computed: { ...mapGetters(['session'])},
     mounted() {
-        this.$store.dispatch("continueSession")
+        if (this.session.status.type !== 'SALE_PAYMENT')
+            this.$store.dispatch("continueSession")
     },
     data () {
         return {
