@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!session.active" class="overlay">
+  <div v-if="!sessionIsActive" class="overlay">
       <div class="container input">
           <span class="title">{{ session.status.description }}</span>
           <form class="line" @submit.prevent="handleInputReceived('ACTION', 'ENTER')">
@@ -12,7 +12,7 @@
   </div>
   <main class="default-main">
       <TransactionDetailsPanel />
-      <router-view v-if="session.active" />
+      <router-view v-if="sessionIsActive" />
   </main>
   <footer>
       <div><span>{{ session.status.title }}</span></div>
@@ -96,7 +96,8 @@ export default {
     },
     computed: {
       ...mapGetters({
-        session: 'session/session'
+        session: 'session/session',
+        sessionIsActive: 'session/isActive'
       })
     },
     mounted() {

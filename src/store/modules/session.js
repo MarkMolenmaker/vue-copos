@@ -56,6 +56,9 @@ export default {
         },
         trainingMode (state) {
             return state.training_mode
+        },
+        isActive (state) {
+            return state.active
         }
     },
     mutations: {
