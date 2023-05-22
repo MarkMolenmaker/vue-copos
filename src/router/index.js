@@ -18,6 +18,10 @@ const routes = [
     { path: '/pay_cash', component: () => import('@/components/Menus/ActionOnly/PayCash.vue') },
     { path: '/pay_pin', component: () => import('@/components/Menus/ActionOnly/PayPin.vue') },
     { path: '/pay_5_euros', component: () => import('@/components/Menus/ActionOnly/Payment/Pay5Euros.vue') },
+    { path: '/pay_10_euros', component: () => import('@/components/Menus/ActionOnly/Payment/Pay10Euros.vue') },
+    { path: '/pay_20_euros', component: () => import('@/components/Menus/ActionOnly/Payment/Pay20Euros.vue') },
+    { path: '/pay_50_euros', component: () => import('@/components/Menus/ActionOnly/Payment/Pay50Euros.vue') },
+    { path: '/pay_100_euros', component: () => import('@/components/Menus/ActionOnly/Payment/Pay100Euros.vue') },
 
     // 404 Not Found
     { path: '/:pathMatch(.*)*', component: NotFoundMenu }
