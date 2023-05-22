@@ -37,6 +37,7 @@ export default {
             const online = await fetchProductBySku(ean)
             if (!online) return // @TODO: show popup: ongeldig/onbekend artikel
             this.$store.commit('addProductToCheckout', {
+                type: 'product',
                 product: new Product(online.sku, online.name, online.listPrice.value),
                 quantity: amount
             })

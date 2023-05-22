@@ -12,9 +12,12 @@ const routes = [
     { path: '/kassa_plus', component: () => import('@/components/Menus/KassaPLUsMenu.vue') },
 
     { path: '/afrekenen', component: () => import('@/components/Menus/AfrekenenMenu.vue') },
+    { path: '/training', component: () => import('@/components/Menus/ActionOnly/Training.vue') },
+
+    // Payment
     { path: '/pay_cash', component: () => import('@/components/Menus/ActionOnly/PayCash.vue') },
     { path: '/pay_pin', component: () => import('@/components/Menus/ActionOnly/PayPin.vue') },
-    { path: '/training', component: () => import('@/components/Menus/ActionOnly/Training.vue') },
+    { path: '/pay_5_euros', component: () => import('@/components/Menus/ActionOnly/Payment/Pay5Euros.vue') },
 
     // 404 Not Found
     { path: '/:pathMatch(.*)*', component: NotFoundMenu }

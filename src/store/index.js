@@ -76,14 +76,14 @@ export default createStore({
         },
         checkoutTotalQuantity (state) {
             let total = 0
-            state.checkout.inventory.forEach(entry => {
+            state.checkout.inventory.filter(entry => entry.type === 'product').forEach(entry => {
                 total += Number(entry.quantity)
             })
             return total
         },
         checkoutTotalPrice (state) {
             let total = 0
-            state.checkout.inventory.forEach(entry => {
+            state.checkout.inventory.filter(entry => entry.type === 'product').forEach(entry => {
                 total += Number(entry.product.price) * Number(entry.quantity)
             })
             return total
@@ -124,12 +124,13 @@ export default createStore({
         setCheckoutTitle (state, payload) {
             state.checkout.title = payload
         },
-        addProductToCheckout (state, payload) {
+        addEntryToCheckoutInventory (state, payload) {
             state.checkout.inventory.push(payload)
         },
         duplicateLastAddedProduct (state, payload) {
             const lastEntry = state.checkout.inventory[state.checkout.inventory.length - 1]
             const newEntry = {
+                type: 'product',
                 product: lastEntry.product,
                 quantity: payload
             }
@@ -143,12 +144,19 @@ export default createStore({
             state.session.training_mode = payload
         },
 
+        makePayment (state, payload) {
+            state.checkout.payment += Number(payload.replace(',', '.'))
+        },
+        clearPayment (state) {
+            state.checkout.payment = 0
+        },
+
         clearRouteHistory (state) {
             state.routerHistory.splice(0)
         }
     },
     actions: {
-        continueSession ({ commit }, payload) {
+        continueSession ({ commit, getters }, payload) {
             // Check session state
             if (this.state.session.status.type === 'INITIAL') {
                 if (isNaN(payload) || payload.length !== 1) return false    // Check if pay desk number is valid
@@ -175,12 +183,20 @@ export default createStore({
                 commit('setSessionStatus', STATUS.SALE_PAYMENT)
                 commit('setSessionActive', true)
                 commit('setCheckoutTitle', 'Begin bon - ...')
+                commit('addEntryToCheckoutInventory', {
+                    type: 'info-large',
+                    message: 'Totaal',
+                    quantity: getters.checkoutTotalQuantity,
+                    value: getters.checkoutTotalPrice,
+                    price: ''
+                })
                 return true
             } else if (this.state.session.status.type === 'SALE_PAYMENT') {
                 commit('setSessionStatus', STATUS.SALE_ASSEMBLY)
                 commit('setSessionActive', true)
                 commit('setCheckoutTitle', 'Welkom')
                 commit('clearInventory')
+                commit('clearPayment')
                 return true
             }
         },
@@ -192,7 +208,7 @@ export default createStore({
             commit('setCheckoutTitle', 'Deze kassa is gesloten')
         },
         addProductToCheckout ({ commit }, payload) {
-            commit('addProductToCheckout', payload)
+            commit('addEntryToCheckoutInventory', payload)
         },
         duplicateLastAddedProduct ({ commit }, payload) {
             commit('duplicateLastAddedProduct', payload)
@@ -200,6 +216,33 @@ export default createStore({
 
         toggleTrainingMode ({ commit }) {
             commit('setTrainingMode', !this.state.session.training_mode)
+        },
+
+        makePayment ({ commit, getters }, {type, value}) {
+            commit('makePayment', value)
+            commit('addEntryToCheckoutInventory', {
+                type: 'payment',
+                message: type,
+                quantity: '',
+                price: '',
+                value: value
+            })
+            if (getters.checkoutTotalPayed <= getters.checkoutTotalPrice)
+                commit('addEntryToCheckoutInventory', {
+                    type: 'info-large',
+                    message: 'Totaal',
+                    quantity: '',
+                    price: '',
+                    value: getters.checkoutTotalPrice - getters.checkoutTotalPayed
+                })
+            else
+                commit('addEntryToCheckoutInventory', {
+                    type: 'info-large',
+                    message: 'Terug',
+                    quantity: '',
+                    price: '',
+                    value: getters.checkoutTotalChange
+                })
         },
 
         clearRouteHistory({ commit }) {

@@ -59,6 +59,7 @@ export default {
                         this.session.input += ","
                         break
                     case 'ENTER':
+                        this.$store.dispatch('makePayment', { type: "Contant", value: this.session.input })
                         this.session.input = ""
                         break;
                 }

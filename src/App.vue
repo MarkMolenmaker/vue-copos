@@ -65,7 +65,8 @@ export default {
             if (e.code === 'Space') {
                 const online = await fetchRandomProduct()
                 if (!online) return // @TODO: show popup: ongeldig/onbekend artikel
-                this.$store.commit('addProductToCheckout', {
+                this.$store.dispatch('addProductToCheckout', {
+                    type: 'product',
                     product: new Product(online.sku, online.name, online.listPrice.value),
                     quantity: 1
                 })
