@@ -4,25 +4,26 @@
 
 <script>
 export default {
-    name: "IntegratedNumpadButton",
-    props: {
-        num: { type: String, required: true },
-        double: { type: Boolean },
-    },
-    methods: {
-        handleClick() {
-            const options = { type: 'ACTION', value: this.num }
-            if (this.num === '00') {
-                options.type = 'INPUT'
-                options.value = this.num
-            }
-            else if (!isNaN(this.num) ) {
-                options.type = 'INPUT'
-                options.value = Number(this.num)
-            }
-            this.emitter.emit('integrated-numpad-button-pressed', options)
-        }
-    }, emits: [ 'integrated-numpad-button-pressed' ]
+  name: "IntegratedNumpadButton",
+  emits: [ 'integrated-numpad-button-pressed' ],
+  props: {
+    num: { type: String, required: true },
+    double: { type: Boolean },
+  },
+  methods: {
+    handleClick() {
+      const options = { type: 'ACTION', value: this.num }
+      if (this.num === '00') {
+        options.type = 'INPUT'
+        options.value = this.num
+      }
+      else if (!isNaN(this.num) ) {
+        options.type = 'INPUT'
+        options.value = Number(this.num)
+      }
+      this.emitter.emit('integrated-numpad-button-pressed', options)
+    }
+  }
 }
 </script>
 

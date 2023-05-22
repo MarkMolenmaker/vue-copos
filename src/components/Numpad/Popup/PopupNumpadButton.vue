@@ -4,20 +4,20 @@
 
 <script>
 export default {
-    name: "PopupNumpadButton",
-    props: {
-        num: { type: String, required: true }
-    },
-    methods: {
-        handleClick() {
-            const options = { type: 'ACTION', value: this.num }
-            if (!isNaN(this.num) ) {
-                options.type = 'INPUT'
-                options.value = Number(this.num)
-            }
-            this.emitter.emit('popup-numpad-button-pressed', options)
-        }
-    }, emits: [ 'popup-numpad-button-pressed' ]
+  name: "PopupNumpadButton",
+  props: {
+    num: { type: String, required: true }
+  },
+  methods: {
+    handleClick() {
+      const options = { type: 'ACTION', value: this.num }
+      if (!isNaN(this.num) ) {
+        options.type = 'INPUT'
+        options.value = Number(this.num)
+      }
+      this.emitter.emit('popup-numpad-button-pressed', options)
+    }
+  }, emits: [ 'popup-numpad-button-pressed' ]
 }
 </script>
 

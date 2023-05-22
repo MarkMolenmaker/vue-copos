@@ -1,18 +1,28 @@
+import {getField, updateField} from "vuex-map-fields";
+
 export default {
     namespaced: true,
     state: {
         /** PRODUCTION **/
         // title: 'Deze kassa is gesloten',
         // inventory: [],
-        // payment: 0
+        // payment: 0,
+        // input: '',
+        // trainingMode: false
 
         /** DEVELOPMENT **/
         title: 'Welkom',
         inventory: [],
-        payment: 0
+        payment: 0,
+        input: '',
+        trainingMode: false
     },
     getters: {
-        checkout (state) { return state },
+        getField,
+        title (state) { return state.title },
+        inventory (state) { return state.inventory },
+        totalPayed (state) { return state.payment },
+        isTrainingModeEnabled (state) { return state.trainingMode },
         totalQuantity (state) {
             let total = 0
             state.inventory.filter(entry => entry.type === 'product').forEach(entry => {
@@ -27,21 +37,20 @@ export default {
             })
             return total
         },
-        totalPayed (state) {
-            return state.payment
-        },
         totalChange (state, getters) {
             return getters.totalPayed >= getters.totalPrice ?
                 Math.abs(getters.totalPrice - getters.totalPayed) : 0
-        },
+        }
     },
     mutations: {
-        setTitle (state, payload) {
-            state.title = payload
-        },
-        addEntryToInventory (state, payload) {
-            state.inventory.push(payload)
-        },
+        updateField,
+        setTitle (state, payload) { state.title = payload },
+        addEntry (state, payload) { state.inventory.push(payload) },
+        clearInventory (state) { state.inventory.splice(0) },
+        makePayment (state, payload) { state.payment += Number(payload) },
+        clearPayment (state) { state.payment = 0 },
+        setTrainingMode (state, payload) { state.session.training_mode = payload },
+        updateInput(state, payload) { state.input += payload },
         duplicateLastAddedProduct (state, payload) {
             const lastEntry = state.inventory[state.inventory.length - 1]
             const newEntry = {
@@ -50,58 +59,16 @@ export default {
                 quantity: payload
             }
             state.inventory.push(newEntry)
-        },
-        clearInventory (state) {
-            state.inventory.splice(0)
-        },
-        makePayment (state, payload) {
-            state.payment += Number(payload)
-        },
-        clearPayment (state) {
-            state.payment = 0
         }
     },
     actions: {
-        addProduct ({ commit }, payload) {
-            commit('addEntryToInventory', payload)
-        },
-        duplicateLastAddedProduct ({ commit }, payload) {
-            commit('duplicateLastAddedProduct', payload)
-        },
-
-        makePayment ({ commit, getters }, {type, value}) {
-            commit('makePayment', value)
-            commit('addEntryToInventory', {
-                type: 'payment',
-                message: type,
-                quantity: '',
-                price: '',
-                value: value
-            })
-            if (getters.totalPayed <= getters.totalPrice)
-                commit('addEntryToInventory', {
-                    type: 'info-large',
-                    message: 'Totaal',
-                    quantity: '',
-                    price: '',
-                    value: getters.totalPrice - getters.totalPayed
-                })
-            else
-                commit('addEntryToInventory', {
-                    type: 'info-large',
-                    message: 'Terug',
-                    quantity: '',
-                    price: '',
-                    value: getters.totalChange
-                })
-        },
-
-        setTitle ({ commit }, payload) {
-            commit('setTitle', payload)
-        },
-
-        addTotalInfo ({ commit, getters }) {
-            commit('addEntryToInventory', {
+        setTitle ({ commit }, payload) { commit('setTitle', payload) },
+        addEntry ({ commit }, payload) { commit('addEntryToInventory', payload) },
+        duplicateLastAddedProduct ({ commit }, payload) { commit('duplicateLastAddedProduct', payload) },
+        clearInventory ({ commit }) { commit('clearInventory') },
+        clearPayment ({ commit }) { commit('clearPayment') },
+        addTotalInfoEntry ({ commit, getters }) {
+            commit('addEntry', {
                 type: 'info-large',
                 message: 'Totaal',
                 quantity: getters.totalQuantity,
@@ -109,14 +76,31 @@ export default {
                 price: ''
             })
         },
-
-        clearInventory ({ commit }) {
-            commit('clearInventory')
-        },
-
-        clearPayment ({ commit }) {
-            commit('clearPayment')
+        makePayment ({ commit, getters }, {type, value}) {
+            commit('makePayment', value)
+            commit('addEntry', {
+                type: 'payment',
+                message: type,
+                quantity: '',
+                price: '',
+                value: value
+            })
+            if (getters.totalPayed <= getters.totalPrice)
+                commit('addEntry', {
+                    type: 'info-large',
+                    message: 'Totaal',
+                    quantity: '',
+                    price: '',
+                    value: getters.totalPrice - getters.totalPayed
+                })
+            else
+                commit('addEntry', {
+                    type: 'info-large',
+                    message: 'Terug',
+                    quantity: '',
+                    price: '',
+                    value: getters.totalChange
+                })
         }
-
     }
 }

@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="lines">
-            <TransactionDetailsSecondaryLine :first="String(checkoutTotalQuantity)" second="Totaal" :third="formattedTotalPrice" bold />
+            <TransactionDetailsSecondaryLine :first="String(totalQuantity)" second="Totaal" :third="formattedTotalPrice" bold />
             <TransactionDetailsSecondaryLine second="Betaald" :third="formattedTotalPayed" normal />
             <TransactionDetailsSecondaryLine second="Terug" :third="formattedTotalChange" large-bold />
         </div>
@@ -20,28 +20,28 @@ import TransactionDetailsSecondaryButton from "@/components/TransactionDetails/T
 import {mapGetters} from "vuex";
 
 export default {
-    name: "TransactionDetailsSecondary",
-    components: {TransactionDetailsSecondaryButton, TransactionDetailsSecondaryLine},
-    computed: {
-        ...mapGetters({
-          checkoutTotalQuantity: 'checkout/totalQuantity',
-          checkoutTotalPrice: 'checkout/totalPrice',
-          checkoutTotalPayed: 'checkout/totalPayed',
-          checkoutTotalChange: 'checkout/totalChange',
-        }),
-        formattedTotalPrice () {
-            return this.checkoutTotalQuantity > 0 ? (Math.round(this.checkoutTotalPrice * 100) / 100).toFixed(2)
-                .replace('.', ',') + ' EUR' : ''
-        },
-        formattedTotalPayed () {
-            return this.checkoutTotalQuantity > 0 ? (Math.round(this.checkoutTotalPayed * 100) / 100).toFixed(2)
-                .replace('.', ',') + ' EUR' : ''
-        },
-        formattedTotalChange () {
-            return this.checkoutTotalQuantity > 0 ? (Math.round(this.checkoutTotalChange * 100) / 100).toFixed(2)
-                .replace('.', ',') + ' EUR' : ''
-        }
+  name: "TransactionDetailsSecondary",
+  components: { TransactionDetailsSecondaryButton, TransactionDetailsSecondaryLine },
+  computed: {
+    ...mapGetters({
+      totalQuantity: 'checkout/totalQuantity',
+      totalPrice: 'checkout/totalPrice',
+      totalPayed: 'checkout/totalPayed',
+      totalChange: 'checkout/totalChange',
+    }),
+    formattedTotalPrice () {
+        return this.totalQuantity > 0 ? (Math.round(this.totalPrice * 100) / 100).toFixed(2)
+            .replace('.', ',') + ' EUR' : ''
+    },
+    formattedTotalPayed () {
+        return this.totalQuantity > 0 ? (Math.round(this.totalPayed * 100) / 100).toFixed(2)
+            .replace('.', ',') + ' EUR' : ''
+    },
+    formattedTotalChange () {
+        return this.totalQuantity > 0 ? (Math.round(this.totalChange * 100) / 100).toFixed(2)
+            .replace('.', ',') + ' EUR' : ''
     }
+  }
 }
 </script>
 

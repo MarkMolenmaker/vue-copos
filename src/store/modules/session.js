@@ -1,6 +1,6 @@
 const DATABASE = {
     USERS: {
-        '1081140': { name: 'Mark Molenmaker', code: '1081140', password: '0000' }
+        '1081140': { name: 'Mark Molenmaker', code: '1081140', password: '00000' }
     },
     findUserByLoginCode: (loginCode) => { return DATABASE.USERS[loginCode] || false }
 }
@@ -27,6 +27,10 @@ const STATUS = {
     },
     SALE_PAYMENT: {
         type: 'SALE_PAYMENT',
+        title: 'Verkoop - Betalen'
+    },
+    SALE_POST_PAYMENT: {
+        type: 'SALE_PAYMENT',
         title: 'Verkoop - Einde'
     }
 }
@@ -37,46 +41,42 @@ export default {
         /** PRODUCTION **/
         // status: STATUS.INITIAL,
         // active: false,
-        // cash_register: undefined,
+        // register: undefined,
         // user: undefined,
-        // training_mode: false,
-        // input: ''
 
         /** DEVELOPMENT **/
         status: STATUS.SALE_ASSEMBLY,
         active: true,
-        cash_register: { name: 'Kassa 1', number: 1 },
-        user: { name: 'Mark Molenmaker', code: '1081140', password: '0000' },
-        training_mode: false,
-        input: ''
+        register: { name: 'Kassa 1', number: 1 },
+        user: { name: 'Mark Molenmaker', code: '1081140', password: '00000' }
     },
     getters: {
-        session (state) {
-            return state
-        },
-        trainingMode (state) {
-            return state.training_mode
+        status (state) {
+            return state.status
         },
         isActive (state) {
             return state.active
+        },
+        register (state) {
+          return state.register
+        },
+        user (state) {
+            return state.user
         }
     },
     mutations: {
         setStatus (state, payload) {
             state.status = payload
         },
-        setCashRegister (state, payload) {
+        setActive (state, payload) {
+            state.active = payload
+        },
+        setRegister (state, payload) {
             state.cash_register = payload
         },
         setUser (state, payload) {
             state.user = payload
-        },
-        setActive (state, payload) {
-            state.active = payload
-        },
-        setTrainingMode (state, payload) {
-            state.session.training_mode = payload
-        },
+        }
     },
     actions: {
         continue ({ commit, getters, dispatch }, payload) {
@@ -117,11 +117,11 @@ export default {
                 return true
             }
         },
-        logout ({ commit }) {
+        logout ({ commit, dispatch }) {
             commit('setStatus', STATUS.INITIAL)
-            commit('setCashRegister', undefined)
-            commit('setUser', undefined)
             commit('setActive', false)
+            commit('setRegister', undefined)
+            commit('setUser', undefined)
             dispatch('checkout/setTitle', 'Deze kassa is gesloten.', { root: true })
         },
 
