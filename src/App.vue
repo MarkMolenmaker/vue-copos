@@ -24,6 +24,44 @@
           <span>(v.0.0.1.20230401.001)</span>
       </div>
   </footer>
+  <section class="cash-drawer">
+    <div class="upper-section">
+      <div class="double-row">
+        <div class="compartment" />
+        <div class="compartment" />
+      </div>
+      <div class="triple-column">
+        <div class="compartment" />
+        <div class="compartment" />
+        <div class="compartment" />
+      </div>
+      <div class="double-row">
+        <div class="compartment" />
+        <div class="compartment" />
+      </div>
+    </div>
+    <div class="lower-section">
+      <div class="double-column bills--coins-section">
+        <div class="double-row">
+          <div class="compartment" />
+          <div class="compartment" />
+        </div>
+        <div class="double-column">
+          <div class="compartment" />
+          <div class="compartment" />
+        </div>
+      </div>
+      <div class="double-row coins--under-section">
+        <div class="quadruple-column">
+          <div class="compartment" />
+          <div class="compartment" />
+          <div class="compartment" />
+          <div class="compartment" />
+        </div>
+        <div class="compartment" />
+      </div>
+    </div>
+  </section>
 </template>
 
 <script>
@@ -81,6 +119,7 @@ export default {
     border: solid white 1px
 
   main
+    margin-top: 1rem
     display: grid
     grid-template-columns: 50fr 50fr
     padding: .25rem
@@ -134,4 +173,36 @@ export default {
         input.input
           height: 2.5rem
           font-size: 1.5rem
+
+  .cash-drawer
+    margin: 1rem 0
+    background-color: var(--color-light-black)
+    border: .15rem solid var(--color-black)
+    height: 20rem
+    display: grid
+    grid-template-rows: 1fr 1fr
+    *
+      display: grid
+    .compartment
+      border: .15rem solid var(--color-black)
+
+    .upper-section
+      grid-template-columns: 3fr 2fr 3fr
+    .lower-section
+      grid-template-columns: 5fr 4fr
+
+    .double-column
+      grid-template-columns: 1fr 1fr
+    .double-row
+      grid-template-rows: 1fr 1fr
+    .triple-column
+      grid-template-columns: 1fr 1fr 1fr
+    .quadruple-column
+      grid-template-columns: 1fr 1fr 1fr 1fr
+
+    .bills--coins-section
+      grid-template-columns: 3fr 2fr
+    .coins--under-section
+      grid-template-rows: 9fr 1fr
+
 </style>
