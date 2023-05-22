@@ -49,10 +49,11 @@ export default {
         clearInventory (state) { state.inventory.splice(0) },
         makePayment (state, payload) { state.payment += Number(payload) },
         clearPayment (state) { state.payment = 0 },
-        setTrainingMode (state, payload) { state.session.training_mode = payload },
-        updateInput(state, payload) { state.input += payload },
+        setTrainingMode (state, payload) { state.trainingMode = payload },
         duplicateLastAddedProduct (state, payload) {
-            const lastEntry = state.inventory[state.inventory.length - 1]
+            const productsInventory = state.inventory.filter(entry => entry.type === 'product')
+            if (productsInventory.length <= 0) return
+            const lastEntry = productsInventory[productsInventory.length - 1]
             const newEntry = {
                 type: 'product',
                 product: lastEntry.product,
@@ -63,10 +64,11 @@ export default {
     },
     actions: {
         setTitle ({ commit }, payload) { commit('setTitle', payload) },
-        addEntry ({ commit }, payload) { commit('addEntryToInventory', payload) },
+        addEntry ({ commit }, payload) { commit('addEntry', payload) },
         duplicateLastAddedProduct ({ commit }, payload) { commit('duplicateLastAddedProduct', payload) },
         clearInventory ({ commit }) { commit('clearInventory') },
         clearPayment ({ commit }) { commit('clearPayment') },
+        toggleTrainingMode ({ commit, getters }) { commit('setTrainingMode', !getters.isTrainingModeEnabled) },
         addTotalInfoEntry ({ commit, getters }) {
             commit('addEntry', {
                 type: 'info-large',
@@ -76,7 +78,7 @@ export default {
                 price: ''
             })
         },
-        makePayment ({ commit, getters }, {type, value}) {
+        makePayment ({ commit, getters, dispatch }, {type, value}) {
             commit('makePayment', value)
             commit('addEntry', {
                 type: 'payment',
@@ -93,7 +95,7 @@ export default {
                     price: '',
                     value: getters.totalPrice - getters.totalPayed
                 })
-            else
+            else {
                 commit('addEntry', {
                     type: 'info-large',
                     message: 'Terug',
@@ -101,6 +103,8 @@ export default {
                     price: '',
                     value: getters.totalChange
                 })
+                dispatch('session/continue', {}, { root: true })
+            }
         }
     }
 }

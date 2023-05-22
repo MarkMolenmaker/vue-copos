@@ -16,9 +16,11 @@ export default {
             ct2000: 2,
             ct5000: 1,
         },
-        digital: 100
+        digital: 100,
+        open: false
     },
     getters: {
+        isOpen (state) { return state.open },
         coins (state) {
             return Object.fromEntries(
                 Object.entries(state.physical)
@@ -32,6 +34,11 @@ export default {
             )
         }
     },
-    mutations: {},
-    actions: {}
+    mutations: {
+        setOpen (state, payload) { state.open = payload },
+    },
+    actions: {
+        open ({ commit }) { commit('setOpen', true) },
+        close ({ commit }) { commit('setOpen', false) }
+    }
 }

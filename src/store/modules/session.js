@@ -30,7 +30,7 @@ const STATUS = {
         title: 'Verkoop - Betalen'
     },
     SALE_POST_PAYMENT: {
-        type: 'SALE_PAYMENT',
+        type: 'SALE_POST_PAYMENT',
         title: 'Verkoop - Einde'
     }
 }
@@ -51,43 +51,27 @@ export default {
         user: { name: 'Mark Molenmaker', code: '1081140', password: '00000' }
     },
     getters: {
-        status (state) {
-            return state.status
-        },
-        isActive (state) {
-            return state.active
-        },
-        register (state) {
-          return state.register
-        },
-        user (state) {
-            return state.user
-        }
+        status (state) { return state.status },
+        isActive (state) { return state.active },
+        register (state) { return state.register },
+        user (state) { return state.user }
     },
     mutations: {
-        setStatus (state, payload) {
-            state.status = payload
-        },
-        setActive (state, payload) {
-            state.active = payload
-        },
-        setRegister (state, payload) {
-            state.cash_register = payload
-        },
-        setUser (state, payload) {
-            state.user = payload
-        }
+        setStatus (state, payload) { state.status = payload },
+        setActive (state, payload) { state.active = payload },
+        setRegister (state, payload) { state.cash_register = payload },
+        setUser (state, payload) { state.user = payload }
     },
     actions: {
         continue ({ commit, getters, dispatch }, payload) {
             // Check session state
-            if (getters.session.status.type === 'INITIAL') {
+            if (getters.status.type === 'INITIAL') {
                 if (isNaN(payload) || payload.length !== 1) return false    // Check if pay desk number is valid
 
                 commit('setStatus', STATUS.ENTER_LOGIN_CODE)
-                commit('setCashRegister', { name: 'Kassa ' + payload, number: payload })
+                commit('setRegister', { name: 'Kassa ' + payload, number: payload })
                 return true
-            } else if (getters.session.status.type === 'ENTER_LOGIN_CODE') {
+            } else if (getters.status.type === 'ENTER_LOGIN_CODE') {
                 if (payload.length !== 7) return false    // Check if login code is valid
 
                 const user = DATABASE.findUserByLoginCode(payload)
@@ -95,22 +79,29 @@ export default {
 
                 commit('setStatus', STATUS.ENTER_PASSWORD)
                 commit('setUser', user)
-            } else if (getters.session.status.type === 'ENTER_PASSWORD') {
-                if (payload !== getters.session.user.password) return false  // Check if password is correct
+            } else if (getters.status.type === 'ENTER_PASSWORD') {
+                if (payload !== getters.user.password) return false  // Check if password is correct
 
                 commit('setStatus', STATUS.SALE_ASSEMBLY)
                 commit('setActive', true)
                 dispatch('checkout/setTitle', 'Welkom', { root: true })
                 return true
-            } else if (getters.session.status.type === 'SALE_ASSEMBLY') {
+            } else if (getters.status.type === 'SALE_ASSEMBLY') {
                 commit('setStatus', STATUS.SALE_PAYMENT)
                 commit('setActive', true)
                 dispatch('checkout/setTitle', 'Begin bon - ...', { root: true })
-                dispatch('checkout/addTotalInfo', {}, { root: true })
+                dispatch('checkout/addTotalInfoEntry', {}, { root: true })
                 return true
-            } else if (getters.session.status.type === 'SALE_PAYMENT') {
+            } else if (getters.status.type === 'SALE_PAYMENT') {
+                commit('setStatus', STATUS.SALE_POST_PAYMENT)
+                dispatch('vault/open', {}, { root: true })
+                return true
+            } else if (getters.status.type === 'SALE_POST_PAYMENT') {
+                // Dispatch save to bonnetje
+
                 commit('setStatus', STATUS.SALE_ASSEMBLY)
                 commit('setActive', true)
+                dispatch('vault/close', {}, { root: true })
                 dispatch('checkout/setTitle', 'Begin bon - ...', { root: true })
                 dispatch('checkout/clearInventory', {}, { root: true })
                 dispatch('checkout/clearPayment', {}, { root: true })
@@ -123,10 +114,6 @@ export default {
             commit('setRegister', undefined)
             commit('setUser', undefined)
             dispatch('checkout/setTitle', 'Deze kassa is gesloten.', { root: true })
-        },
-
-        toggleTrainingMode ({ commit, getters }) {
-            commit('setTrainingMode', !getters.trainingMode)
-        },
+        }
     }
 }

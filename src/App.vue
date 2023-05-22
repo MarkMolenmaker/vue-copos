@@ -25,7 +25,10 @@
       </div>
   </footer>
   <section class="cash-drawer--section">
-      <CashDrawer />
+    <CashDrawer />
+    <div class="button" v-if="isOpen">
+      <a @click="this.handleCloseAction()">Sluiten</a>
+    </div>
   </section>
 </template>
 
@@ -46,7 +49,8 @@ export default {
       status: 'session/status',
       isActive: 'session/isActive',
       register: 'session/register',
-      user: 'session/user'
+      user: 'session/user',
+      isOpen: 'vault/isOpen'
     })
   },
   methods: {
@@ -66,6 +70,12 @@ export default {
           case 'ENTER':
             if (this.$store.dispatch('session/continue',  this.input)) this.input = ""
         }
+    },
+    handleCloseAction () {
+      this.$store.dispatch('vault/close')
+      if (this.status.type === 'SALE_POST_PAYMENT')
+        this.$store.dispatch('session/continue')
+            .then(() => this.$router.push('/'))
     }
   },
   mounted() {
@@ -77,7 +87,7 @@ export default {
       if (e.code === 'Insert') {
         const online = await fetchRandomProduct()
         if (!online) return // @TODO: show popup: ongeldig/onbekend artikel
-        this.$store.dispatch('checkout/addProduct', {
+        this.$store.dispatch('checkout/addEntry', {
           type: 'product',
           product: new Product(online.sku, online.name, online.listPrice.value),
           quantity: 1
@@ -149,5 +159,25 @@ footer
         font-size: 1.5rem
 
 .cash-drawer--section
-  margin-top: 1rem
+  display: grid
+  grid-template-columns: 100% 1fr
+  .button
+    width: 100%
+    margin: 1rem 0 0 1rem
+    padding: .1rem
+    height: fit-content
+    background-color: var(--color-red)
+    a
+      font-size: 1.25rem
+      padding: 1rem 1.5rem
+      display: flex
+      color: white
+      text-decoration: none
+      text-align: center
+      justify-content: center
+      align-items: center
+      height: 100%
+      width: 100%
+    a:hover
+      cursor: pointer
 </style>

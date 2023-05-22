@@ -1,5 +1,5 @@
 <template>
-  <div class="cash-drawer">
+  <div class="cash-drawer" v-if="isOpen">
     <div class="upper-section">
       <div class="double-row">
         <NoteCompartment content="ct5000" />
@@ -37,19 +37,18 @@
       </div>
     </div>
   </div>
+  <div class="cash-drawer" v-else />
 </template>
 
 <script>
 import CoinCompartment from "@/components/CashDrawer/CoinCompartment.vue";
 import NoteCompartment from "@/components/CashDrawer/NoteCompartment.vue";
+import {mapGetters} from "vuex";
 
 export default {
   name: "CashDrawer",
-  components: {NoteCompartment, CoinCompartment},
-  data () { return {} },
-  methods: {},
-  computed: {},
-  mounted() {}
+  components: { NoteCompartment, CoinCompartment },
+  computed: { ...mapGetters({ isOpen: 'vault/isOpen' }) },
 }
 </script>
 

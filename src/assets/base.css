@@ -9,6 +9,7 @@
   --color-green: #4eb845;
   --color-light-black: #262626;
   --color-black: #000000;
+  --color-red: #e84a2d;
 
   --color-border: white;
   --color-border-focus: black;
@@ -40,7 +41,7 @@ body {
 
 .gray { background-color: var(--color-gray)
 }
-.red { background-color: #e84a2d
+.red { background-color: var(--color-red)
 }
 .blue { background-color: #59a8c3
 }
@@ -54,4 +55,4 @@ body {
 }
 .purple { background-color: #a769da
 }
-.color-black { color: black }
+.color-black { color: var(--color-black) }
