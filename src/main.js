@@ -15,10 +15,9 @@ app.directive('focus', { mounted(el) { el.focus() } })
 
 router.options.scrollBehavior = function (to, from, savedPosition) {
     const fromHistory = Boolean(savedPosition)
-    if (fromHistory && store.state.routerHistory.length > 0)
-        store.state.routerHistory.splice(-1, 1);
-    else store.state.routerHistory.push(from)
-    console.log(store.state.routerHistory)
+    if (fromHistory && store.getters["routerHistory/length"] > 0)
+        store.dispatch("routerHistory/splice")
+    else store.dispatch("routerHistory/push", from)
     return savedPosition || { x:0, y:0 }
 }
 

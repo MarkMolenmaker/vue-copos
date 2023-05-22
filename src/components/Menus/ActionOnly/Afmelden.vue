@@ -6,7 +6,7 @@
 export default {
     name: "Afmelden",
     mounted() {
-        this.$store.dispatch("logout")
+        this.$store.dispatch("session/logout")
         this.$router.push('/')
     }
 }

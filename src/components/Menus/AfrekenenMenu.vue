@@ -9,11 +9,11 @@ import {mapGetters} from "vuex";
 
 export default {
     name: "AfrekenenMenu",
-    computed: {...mapGetters(['session'])},
+    computed: { ...mapGetters({ session: 'session/session' })},
     mounted() {
         this.emitter.on('integrated-numpad-button-pressed', ({ type, value }) => this.handleInputReceived(type, value))
         if (this.session.status.type !== 'SALE_PAYMENT')
-            this.$store.dispatch("continueSession")
+            this.$store.dispatch("session/continue")
     },
     data() {
         return {
@@ -59,7 +59,7 @@ export default {
                         this.session.input += ","
                         break
                     case 'ENTER':
-                        this.$store.dispatch('makePayment', { type: "Contant", value: this.session.input })
+                        this.$store.dispatch('checkout/makePayment', { type: "Contant", value: this.session.input.replace(',', '.') })
                         this.session.input = ""
                         break;
                 }

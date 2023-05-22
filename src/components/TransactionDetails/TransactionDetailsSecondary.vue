@@ -23,7 +23,12 @@ export default {
     name: "TransactionDetailsSecondary",
     components: {TransactionDetailsSecondaryButton, TransactionDetailsSecondaryLine},
     computed: {
-        ...mapGetters([ 'checkoutTotalQuantity', 'checkoutTotalPrice', 'checkoutTotalPayed', 'checkoutTotalChange' ]),
+        ...mapGetters({
+          checkoutTotalQuantity: 'checkout/totalQuantity',
+          checkoutTotalPrice: 'checkout/totalPrice',
+          checkoutTotalPayed: 'checkout/totalPayed',
+          checkoutTotalChange: 'checkout/totalChange',
+        }),
         formattedTotalPrice () {
             return this.checkoutTotalQuantity > 0 ? (Math.round(this.checkoutTotalPrice * 100) / 100).toFixed(2)
                 .replace('.', ',') + ' EUR' : ''

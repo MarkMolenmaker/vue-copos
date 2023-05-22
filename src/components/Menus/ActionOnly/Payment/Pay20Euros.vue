@@ -6,7 +6,7 @@
 export default {
     name: "Pay20Euros",
     mounted() {
-        this.$store.dispatch("makePayment", {type: "Contant", value: "20"})
+        this.$store.dispatch("checkout/makePayment", {type: "Contant", value: "20"})
         this.$router.go(-1)
     }
 }

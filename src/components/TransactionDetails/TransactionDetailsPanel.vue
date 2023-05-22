@@ -58,9 +58,13 @@ export default {
         this.watchInventorySize()
     },
     computed: {
-        ...mapGetters([
-            'checkout', 'session', 'checkoutTotalQuantity', 'checkoutTotalPrice', 'trainingMode'
-        ]),
+        ...mapGetters({
+          checkout: 'checkout/checkout',
+          session: 'session/session',
+          checkoutTotalQuantity: 'checkout/totalQuantity',
+          checkoutTotalPrice: 'checkout/totalPrice',
+          trainingMode: 'session/trainingMode'
+        }),
         formattedTotalPrice () {
             return (Math.round(this.checkoutTotalPrice * 100) / 100).toFixed(2).replace('.', ',')
         },

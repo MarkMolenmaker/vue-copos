@@ -72,8 +72,8 @@ import PopupNumpadPanel from "@/components/Numpad/Popup/PopupNumpadPanel.vue";
 import {fetchRandomProduct, Product} from "@/util";
 
 export default {
-    components: {PopupNumpadPanel, PopupNumpadButton, TransactionDetailsPanel },
-    data () { return { datetime: "", input: "" }},
+    components: { PopupNumpadPanel, PopupNumpadButton, TransactionDetailsPanel },
+    data () { return { datetime: "", input: "" } },
     created () { setInterval(this.currentDateTime, 1000); this.currentDateTime() },
     methods: {
         currentDateTime () { this.datetime = new Date().toLocaleString('nl') },
@@ -90,20 +90,24 @@ export default {
                         this.input = ""
                         break
                     case 'ENTER':
-                        if (this.$store.dispatch('continueSession',  this.input)) this.input = ""
+                        if (this.$store.dispatch('session/continue',  this.input)) this.input = ""
                 }
         }
     },
-    computed: { ...mapGetters([ 'session' ]) },
+    computed: {
+      ...mapGetters({
+        session: 'session/session'
+      })
+    },
     mounted() {
         this.emitter.on('popup-numpad-button-pressed', ({ type, value }) => this.handleInputReceived(type, value))
         // Handle the event of the spacebar being released
         window.addEventListener('keyup', async (e) => {
             if (!this.session.active || this.session.status.type !== 'SALE_ASSEMBLY') return
-            if (e.code === 'Space') {
+            if (e.code === 'Insert') {
                 const online = await fetchRandomProduct()
                 if (!online) return // @TODO: show popup: ongeldig/onbekend artikel
-                this.$store.dispatch('addProductToCheckout', {
+                this.$store.dispatch('checkout/addProduct', {
                     type: 'product',
                     product: new Product(online.sku, online.name, online.listPrice.value),
                     quantity: 1

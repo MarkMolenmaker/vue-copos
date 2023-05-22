@@ -4,8 +4,8 @@
             <div class="button" v-for="button in row" :key="button" :style="{ width: (100 / rowSize) * (button !== null ? button.size : 1) + '%'}">
                 <a v-if="
                     button === null
-                    || (checkoutTotalQuantity > 0 && button.link === '/afmelden')
-                    || (checkoutTotalQuantity <= 0 && button.link === '/afrekenen')
+                    || (totalQuantity > 0 && button.link === '/afmelden')
+                    || (totalQuantity <= 0 && button.link === '/afrekenen')
                 " class="empty" />
                 <router-link v-else-if="button.link[0] === '/'" :class="button.color" :to="button.link">
                     {{ button.title }}
@@ -43,7 +43,7 @@ export default {
                     this.$router.go(-1)
                     break
                 case 'MAIN_MENU':
-                    this.$store.dispatch('clearRouteHistory')
+                    this.$store.dispatch('routerHistory/clear')
                     this.$router.push('/')
                     break
                 default:
@@ -52,7 +52,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['checkoutTotalQuantity']),
+        ...mapGetters({totalQuantity: 'checkout/totalQuantity'}),
         buttonGrid () {
             const grid = []
             for (let row = 0; row < Number(this.rows); row++) {

@@ -1,5 +1,5 @@
 <template>
-  <span @click="handleClick" :class="{double: double}">{{ num }}</span>
+  <span @click="handleClick" :class="{double: this.double}">{{ num }}</span>
 </template>
 
 <script>

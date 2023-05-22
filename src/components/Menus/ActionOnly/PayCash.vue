@@ -6,7 +6,7 @@
 export default {
     name: "PayCash",
     mounted() {
-        this.$store.dispatch("continueSession")
+        this.$store.dispatch("session/continue")
         this.$router.push('/')
     }
 }

@@ -36,7 +36,7 @@ export default {
         async scanProduct(ean, amount = 1) {
             const online = await fetchProductBySku(ean)
             if (!online) return // @TODO: show popup: ongeldig/onbekend artikel
-            this.$store.commit('addProductToCheckout', {
+            this.$store.dispatch('checkout/addProduct', {
                 type: 'product',
                 product: new Product(online.sku, online.name, online.listPrice.value),
                 quantity: amount
@@ -61,9 +61,9 @@ export default {
                         const multiply_with_ean_match = this.session.input.match(/(^\d+)\[\*\](\d+)$/) // 1[*]871203929
 
                         if (this.session.input === "")
-                            this.$store.commit('duplicateLastAddedProduct', 1)  // Duplicate the product x amount of times
+                            this.$store.dispatch('checkout/duplicateLastAddedProduct', 1)  // Duplicate the product x amount of times
                         else if (multiply_match)
-                            this.$store.commit('duplicateLastAddedProduct', multiply_match[1])  // Duplicate the product x amount of times
+                            this.$store.dispatch('checkout/duplicateLastAddedProduct', multiply_match[1])  // Duplicate the product x amount of times
                         else if (multiply_with_ean_match)
                             this.scanProduct(multiply_with_ean_match[2], Number(multiply_with_ean_match[1]))
                         else
@@ -74,7 +74,7 @@ export default {
                 }
         }
     },
-    computed: {...mapGetters(['session'])},
+    computed: {...mapGetters({session: 'session/session'})},
     mounted() {
         this.emitter.on('integrated-numpad-button-pressed', ({ type, value }) => this.handleInputReceived(type, value))
     },
