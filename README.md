@@ -94,3 +94,6 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 
 #### Util menu views
 - [x] Not Found Menu
+
+## To Do:
+- [ ] Refactor `vuex stores` and cleanup project
