@@ -64,6 +64,10 @@ router.beforeEach((to, from, next) => {
             store.dispatch("vault/open")
                 .then(() => {})
             return
+        case '/kopie_bon':
+            store.dispatch("alert/showInfoAlert", "Bon is uitgeprint!")
+                .then(() => {})
+            return
     }
     next()
 })

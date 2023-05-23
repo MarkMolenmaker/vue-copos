@@ -5,7 +5,6 @@
         <a v-if="
             button === null
             || (totalQuantity > 0 && button.link === '/afmelden')
-            || (totalQuantity <= 0 && button.link === '/afrekenen')
         " class="empty" />
         <router-link v-else-if="button.link[0] === '/'" :class="button.color" :to="button.link">
             {{ button.title }}

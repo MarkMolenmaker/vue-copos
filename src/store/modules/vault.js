@@ -38,7 +38,13 @@ export default {
         setOpen (state, payload) { state.open = payload },
     },
     actions: {
-        open ({ commit }) { commit('setOpen', true) },
-        close ({ commit }) { commit('setOpen', false) }
+        open ({ commit, dispatch }) {
+            commit('setOpen', true)
+            dispatch('alert/showBlockingAlert', 'Kassalade is open!', { root: true })
+        },
+        close ({ commit, dispatch }) {
+            commit('setOpen', false)
+            dispatch('alert/closeAlert', {}, { root: true })
+        }
     }
 }

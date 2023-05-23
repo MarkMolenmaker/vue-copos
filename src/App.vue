@@ -11,8 +11,16 @@
       <PopupNumpadPanel />
   </div>
   <main class="default-main">
-      <TransactionDetailsPanel />
-      <router-view v-if="isActive" />
+    <div v-if="activeAlert" class="alert-container">
+      <InfoAlert v-if="alert.type === 'INFO'" :message="alert.message" />
+      <BlockingAlert v-if="alert.type === 'BLOCKING'" :message="alert.message" />
+      <!--    <ErrorAlert v-if="alert.type === 'ERROR'" :message="alert.message" />-->
+      <!--    <WarningAlert v-if="alert.type === 'WARNING'" :message="alert.message" />-->
+      <!--    <ConfirmAlert v-if="alert.type === 'CONFIRM'" :message="alert.message" />-->
+      <div class="alert-overlay" />
+    </div>
+    <TransactionDetailsPanel class="transaction-container" />
+    <router-view v-if="isActive" class="view-container" />
   </main>
   <footer>
       <div><span>{{ status.title }}</span></div>
@@ -40,9 +48,11 @@ import PopupNumpadPanel from "@/components/Numpad/Popup/PopupNumpadPanel.vue";
 import {Product} from "@/util/classes/Product";
 import {fetchRandomProduct} from "@/util/actions/fetchProductFromAPI";
 import CashDrawer from "@/components/CashDrawer/CashDrawer.vue";
+import InfoAlert from "@/components/Alert/InfoAlert.vue";
+import BlockingAlert from "@/components/Alert/BlockingAlert.vue";
 
 export default {
-  components: { CashDrawer, PopupNumpadPanel, PopupNumpadButton, TransactionDetailsPanel },
+  components: {BlockingAlert, InfoAlert, CashDrawer, PopupNumpadPanel, PopupNumpadButton, TransactionDetailsPanel },
   data () { return { datetime: "", input: "" } },
   created () { setInterval(this.currentDateTime, 1000); this.currentDateTime() },
   computed: {
@@ -51,7 +61,9 @@ export default {
       isActive: 'session/isActive',
       register: 'session/register',
       user: 'session/user',
-      isOpen: 'vault/isOpen'
+      isOpen: 'vault/isOpen',
+      activeAlert: 'alert/isActive',
+      alert: 'alert/alert'
     })
   },
   methods: {
@@ -100,14 +112,39 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+
+
 main, footer
   border: solid white 1px
 
 main
   margin-top: 1rem
   display: grid
-  grid-template-columns: 50fr 50fr
+  grid-template-areas: "alert alert" "transaction view"
+  grid-template-columns: 1fr 1fr
   padding: .25rem
+
+  .alert-container
+    grid-area: alert
+    display: flex
+    justify-content: center
+    align-items: center
+    position: absolute
+    width: 100%
+    height: 100%
+
+.alert-overlay
+  z-index: 101
+  width: 100%
+  height: 100%
+  position: absolute
+  background: rgba(255, 255, 255, 0.25)
+
+  .transaction-container
+    grid-area: transaction
+
+  .view-container
+    grid-area: view
 
 footer
   display: flex
@@ -134,6 +171,7 @@ footer
   .container
     border: solid white 1px
     background: var(--color-background-dark)
+    transform: translateY(-20rem)
 
   .container.input
     padding: 1rem
