@@ -68,8 +68,8 @@ export default {
             this.input += ","
             break
           case 'ENTER':
-            const multiply_match = this.input.match(/(^\d+)\[\*\]$/) // 1[*]
-            const multiply_with_ean_match = this.input.match(/(^\d+)\[\*\](\d+)$/) // 1[*]871203929
+            const multiply_match = this.input.match(/(^\d+)\[\*]$/) // 1[*]
+            const multiply_with_ean_match = this.input.match(/(^\d+)\[\*](\d+)$/) // 1[*]871203929
 
             if (this.input === "")
               this.$store.dispatch('checkout/duplicateLastAddedProduct', 1)  // Duplicate the product x amount of times

@@ -79,14 +79,14 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
   - [ ] Emballage retour
   - [ ] Cadeaukaart
   - [ ] Waardebon
-  - [ ] Briefgeld
-    - [ ] 5 EUR
-    - [ ] 10 EUR
-    - [ ] 20 EUR
-    - [ ] 50 EUR
-    - [ ] 100 EUR
-  - [wip] Contant
-  - [wip] PIN
+  - [x] Briefgeld
+    - [x] 5 EUR
+    - [x] 10 EUR
+    - [x] 20 EUR
+    - [x] 50 EUR
+    - [x] 100 EUR
+  - [x] Contant
+  - [ ] PIN
 
 
 - [x] Afmelden
@@ -96,4 +96,11 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 - [x] Not Found Menu
 
 ## To Do:
-- [ ] Refactor `vuex stores` and cleanup project
+- [x] Refactor `vuex stores` and cleanup project
+- [x] Implement Alerts
+- [ ] Implement Pin betalen
+- [x] Add kassalade
+- [ ] Add kassabon
+
+## Bugs
+- [ ] Fix `TransactionDetailsInputLine` content updating weirdly after navigating.
