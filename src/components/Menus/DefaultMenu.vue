@@ -4,10 +4,11 @@
 
 <script>
 import MenuPanel from "@/components/Menus/MenuPanel.vue";
-import { Button } from "@/util/Button";
-import {fetchProductBySku, Product} from "@/util";
+import {Product} from "@/util/classes/Product";
+import {fetchProductBySku} from "@/util/actions/fetchProductFromAPI";
 import {mapGetters} from "vuex";
 import {mapFields} from "vuex-map-fields";
+import {Button} from "@/util/classes/Button";
 
 export default {
   name: "DefaultMenu",

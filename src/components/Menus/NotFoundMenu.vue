@@ -4,7 +4,7 @@
 
 <script>
 import MenuPanel from "@/components/Menus/MenuPanel.vue";
-import { Button } from "@/util/Button";
+import { Button } from "@/util/classes/Button";
 
 export default {
   name: "NotFoundMenu",

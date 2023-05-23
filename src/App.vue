@@ -37,7 +37,8 @@ import {mapGetters} from "vuex";
 import TransactionDetailsPanel from "@/components/TransactionDetails/TransactionDetailsPanel.vue";
 import PopupNumpadButton from "@/components/Numpad/Popup/PopupNumpadButton.vue";
 import PopupNumpadPanel from "@/components/Numpad/Popup/PopupNumpadPanel.vue";
-import {fetchRandomProduct, Product} from "@/util";
+import {Product} from "@/util/classes/Product";
+import {fetchRandomProduct} from "@/util/actions/fetchProductFromAPI";
 import CashDrawer from "@/components/CashDrawer/CashDrawer.vue";
 
 export default {

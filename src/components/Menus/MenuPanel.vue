@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import {Button} from "@/util/Button";
+import {Button} from "@/util/classes/Button"
 import IntegratedNumpadPanel from "@/components/Numpad/Integrated/IntegratedNumpadPanel.vue";
 import {mapGetters} from "vuex";
 
