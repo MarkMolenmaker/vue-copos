@@ -97,8 +97,7 @@ export default {
                 dispatch('vault/open', {}, { root: true })
                 return true
             } else if (getters.status.type === 'SALE_POST_PAYMENT') {
-                // Dispatch save to bonnetje
-
+                // TODO: Dispatch print receipt
                 commit('setStatus', STATUS.SALE_ASSEMBLY)
                 commit('setActive', true)
                 dispatch('vault/close', {}, { root: true })

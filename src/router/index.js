@@ -33,11 +33,11 @@ router.beforeEach((to, from, next) => {
                 .then(() => next(from.path))
             return
         case '/pay_cash':
-            store.dispatch("session/continue")
+            store.dispatch("checkout/makeFullPayment", "Contant")
                 .then(() => {})
             return
         case '/pay_pin':
-            store.dispatch("session/continue")
+            store.dispatch("checkout/makeFullPayment", "Betaalpas")
                 .then(() => {})
             return
         case '/pay_5_euros':

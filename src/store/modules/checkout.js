@@ -105,6 +105,24 @@ export default {
                 })
                 dispatch('session/continue', {}, { root: true })
             }
+        },
+        makeFullPayment ({ commit, getters, dispatch }, payload) {
+            commit('makePayment', getters.totalPrice - getters.totalPayed)
+            commit('addEntry', {
+                type: 'payment',
+                message: payload,
+                quantity: '',
+                price: '',
+                value: getters.totalPrice - getters.totalPayed
+            })
+            commit('addEntry', {
+                type: 'info-large',
+                message: 'Terug',
+                quantity: '',
+                price: '',
+                value: getters.totalChange
+            })
+            dispatch('session/continue', {}, { root: true })
         }
     }
 }
