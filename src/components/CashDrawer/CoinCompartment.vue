@@ -1,6 +1,6 @@
 <template>
   <div class="compartment">
-    <div class="content" :style="{ backgroundImage: this.coin }"/>
+    <div class="content" :style="{ backgroundImage: `url('${this.coin}')` }"/>
   </div>
 </template>
 
@@ -12,7 +12,8 @@ export default {
   props: { content: { type: String, required: true } },
   computed: {
     ...mapGetters({ coins: "vault/coins" }),
-    coin() { return `url("src/assets/icons/valuta/${this.content}_cluster.png")` }
+    coin () { return new URL(`/src/assets/icons/valuta/${this.content}_cluster.png`, import.meta.url).href },
+    // coin() { return `url("src/assets/icons/valuta/${this.content}_cluster.png")` }
   }
 }
 </script>

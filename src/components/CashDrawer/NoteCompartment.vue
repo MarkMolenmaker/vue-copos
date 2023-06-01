@@ -1,6 +1,6 @@
 <template>
   <div class="compartment" >
-    <div class="content" :style="{ backgroundImage: this.note }"/>
+    <div class="content" :style="{ backgroundImage: `url('${this.note}')` }"/>
   </div>
 </template>
 
@@ -12,7 +12,8 @@ export default {
   props: { content: { type: String, required: true } },
   computed: {
     ...mapGetters({ coins: "vault/notes" }),
-    note() { return `url("src/assets/icons/valuta/${this.content}_cluster.png")` }
+    note () { return new URL(`/src/assets/icons/valuta/${this.content}_cluster.png`, import.meta.url).href },
+    // note() { return `url("src/assets/icons/valuta/${this.content}_cluster.png")` }
   }
 }
 </script>

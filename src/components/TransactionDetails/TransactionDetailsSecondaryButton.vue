@@ -12,7 +12,8 @@ export default {
         overlay: Boolean, background: Boolean
     },
     computed: {
-        image () { return 'src/assets/icons/secondary_button_' + this.icon + '.png' },
+        // image () { return 'src/assets/icons/secondary_button_' + this.icon + '.png' },
+        image () { return new URL(`/src/assets/icons/secondary_button_${this.icon}.png`, import.meta.url).href },
         classObject () { return { background: this.background, overlay: this.overlay } }
     }
 }
