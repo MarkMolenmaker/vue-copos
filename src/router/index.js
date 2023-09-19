@@ -8,9 +8,10 @@ const routes = [
     { path: '/', component: DefaultMenu },
 
     // Lazy loading
+    { path: '/afrekenen', component: () => import('@/components/Menus/AfrekenenMenu.vue') },
     { path: '/supervisor_menu', component: () => import('@/components/Menus/SupervisorMenu.vue') },
     { path: '/kassa_plus', component: () => import('@/components/Menus/KassaPLUsMenu.vue') },
-    { path: '/afrekenen', component: () => import('@/components/Menus/AfrekenenMenu.vue') },
+    { path: '/broodjes', component: () => import('@/components/Menus/KassaPLUsBroodjesMenu.vue') },
 
     // 404 Not Found
     { path: '/:pathMatch(.*)*', component: NotFoundMenu }
