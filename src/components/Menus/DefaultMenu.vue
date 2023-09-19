@@ -21,6 +21,9 @@ export default {
     this.emitter.on('integrated-numpad-button-pressed',
       ({ type, value }) => this.handleInputReceived(type, value))
   },
+  beforeUnmount() {
+    this.emitter.off('integrated-numpad-button-pressed')
+  },
   data () {
     return {
       buttons: [ // 0-7 : 0-4

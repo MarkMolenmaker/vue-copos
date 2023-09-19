@@ -20,6 +20,9 @@ export default {
       if (this.status.type !== 'SALE_PAYMENT' && this.status.type !== 'SALE_POST_PAYMENT')
           this.$store.dispatch("session/continue")
   },
+  beforeUnmount() {
+    this.emitter.off('integrated-numpad-button-pressed')
+  },
   data() {
     return {
       buttons: [ // 0-7 : 0-4
@@ -64,6 +67,13 @@ export default {
             this.input += ","
             break
           case 'ENTER':
+            // Check the length of the input
+            if (this.input.length === 1) this.input = '0,0' + this.input
+            else if (this.input.length === 2) this.input = '0,' + this.input
+
+            // Check if the input doesn't contain a comma. If so, add a comma at the second to last position
+            if (!this.input.includes(',')) this.input = this.input.slice(0, -2) + ',' + this.input.slice(-2)
+
             this.$store.dispatch('checkout/makePayment', { type: "Contant", value: this.input.replace(',', '.') })
             this.input = ""
             break;
