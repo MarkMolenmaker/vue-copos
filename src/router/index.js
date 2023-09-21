@@ -11,8 +11,16 @@ const routes = [
     { path: '/afrekenen', component: () => import('@/components/Menus/AfrekenenMenu.vue') },
     { path: '/supervisor_menu', component: () => import('@/components/Menus/SupervisorMenu.vue') },
     { path: '/kassa_plus', component: () => import('@/components/Menus/PLU/KassaPLUsMenu.vue') },
-    { path: '/broodjes/:page', component: () => import('@/components/Menus/PLU/KassaPLUsBroodjesMenu.vue') },
-    { path: '/wegen_appels_en_peren/:page', component: () => import('@/components/Menus/PLU/KassaPLUsAppelsPerenMenu.vue') },
+    {
+        path: '/broodjes/:page',
+        props: { category: 'BREAD' },
+        component: () => import('@/components/Menus/PLU/DynamicKassaPLUsMenu.vue')
+    },
+    {
+        path: '/wegen_appels_en_peren/:page',
+        props: { category: 'APPLES_AND_PEARS' },
+        component: () => import('@/components/Menus/PLU/DynamicKassaPLUsMenu.vue')
+    },
 
     // 404 Not Found
     { path: '/:pathMatch(.*)*', component: NotFoundMenu }
