@@ -18,7 +18,7 @@ export default {
         new Button('Supervisor Menu', 'red', '/supervisor_menu', 1, 2, 1),
         new Button('Non scan menu', 'blue', '/non_scan_menu', 1, 3, 1),
 
-        new Button('Broodjes', 'green', '/broodjes', 2, 1, 2),
+        new Button('Broodjes', 'green', '/broodjes/0', 2, 1, 2),
         new Button('Stuks fruit', 'green', '/stuks_fruit', 2, 3, 2),
 
         new Button('Stuks groente', 'green', '/stuks_groente', 3, 1, 2),

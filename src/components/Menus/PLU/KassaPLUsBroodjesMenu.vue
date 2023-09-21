@@ -3,8 +3,8 @@
 </template>
 
 <script>
-import PLUPanel from "@/components/Menus/PLUPanel.vue";
-import {collectAllBreadProductsList} from "@/util/actions/fetchProductFromAPI";
+import PLUPanel from "@/components/Menus/PLU/PLUPanel.vue";
+import {collectBreadProductsList} from "@/util/actions/fetchProductFromAPI";
 
 export default {
   name: "KassaPLUsBroodjesMenu",
@@ -15,7 +15,7 @@ export default {
     }
   },
   mounted() {
-    collectAllBreadProductsList().then(res => {
+    collectBreadProductsList().then(res => {
       this.plus = res
     })
   }

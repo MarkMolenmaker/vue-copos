@@ -121,7 +121,7 @@ main
   margin-top: 1rem
   display: grid
   grid-template-areas: "alert alert" "transaction view"
-  grid-template-columns: 1fr 1fr
+  grid-template-columns: 50% 50%
   padding: .25rem
 
   .alert-container

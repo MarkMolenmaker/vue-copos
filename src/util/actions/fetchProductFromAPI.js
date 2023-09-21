@@ -24,7 +24,7 @@ export async function fetchRandomProduct() {
     return await fetchProductBySku(sku)
 }
 
-export async function collectAllBreadProductsList() {
+export async function collectBreadProductsList() {
     // Fetch the total amount of products
     const date = new Date().toISOString().slice(0, 10)
     const total = await fetch('https://api.coop.nl/INTERSHOP/rest/WFS/COOP-COOPBase-Site/-;loc=nl_NL;cur=EUR/categories/boodschappen/brood_bakkerij_ontbijtgranen_en_broodvervangers/harde_broodjes/products?sort=asc&amount=0&offset=0&_date=' + date, {method: 'GET'})
