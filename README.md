@@ -101,6 +101,7 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 - [ ] Implement Pin betalen
 - [x] Add kassalade
 - [ ] Add kassabon
+- [ ] Add koopzegels printen alert
 
 ## Bugs
 - [x] Fix `TransactionDetailsInputLine` content updating weirdly after navigating.
