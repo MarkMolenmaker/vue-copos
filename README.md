@@ -52,12 +52,12 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 
 
 - [x] Kassa PLU's
-  - [ ] Broodjes
-  - [ ] Stuks fruit
-  - [ ] Stuks groente
-  - [ ] Wegen appels & peren
-  - [ ] Wegen fruit
-  - [ ] Wegen groente
+  - [x] Broodjes
+  - [x] Stuks fruit
+  - [x] Stuks groente
+  - [x] Wegen appels & peren
+  - [x] Wegen fruit
+  - [x] Wegen groente
   - [ ] Bier
   - [ ] Telefoon kaarten
   - [ ] Service en diensten
@@ -86,7 +86,7 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
     - [x] 50 EUR
     - [x] 100 EUR
   - [x] Contant
-  - [ ] PIN
+  - [x] PIN
 
 
 - [x] Afmelden
@@ -103,4 +103,4 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 - [ ] Add kassabon
 
 ## Bugs
-- [ ] Fix `TransactionDetailsInputLine` content updating weirdly after navigating.
+- [x] Fix `TransactionDetailsInputLine` content updating weirdly after navigating.

@@ -3,7 +3,7 @@
     <div class="row" :style="{ height: 100 / (Number(rows) + 1) + '%' }"
          v-for="row in buttonGrid" :key="row">
       <div class="button" v-for="product in row" :key="product" :style="{ width: (100 / rowSize) + '%'}">
-        <a v-if="product" class="light-blue" @click="action('ADD_PRODUCT', product)">
+        <a v-if="product" class="light-blue" @click="action('ADD_PRODUCT', product)" :title="product.title">
           <img v-if="product.attributes.length === 3" :src="product.attributes[2].value" alt="">
           <span>{{ product.title }}</span>
         </a>

@@ -17,8 +17,28 @@ const routes = [
         component: () => import('@/components/Menus/PLU/DynamicKassaPLUsMenu.vue')
     },
     {
+        path: '/stuks_fruit/:page',
+        props: { category: 'FRUIT_PIECES' },
+        component: () => import('@/components/Menus/PLU/DynamicKassaPLUsMenu.vue')
+    },
+    {
         path: '/wegen_appels_en_peren/:page',
         props: { category: 'APPLES_AND_PEARS' },
+        component: () => import('@/components/Menus/PLU/DynamicKassaPLUsMenu.vue')
+    },
+    {
+        path: '/stuks_groente/:page',
+        props: { category: 'VEGETABLE_PIECES' },
+        component: () => import('@/components/Menus/PLU/DynamicKassaPLUsMenu.vue')
+    },
+    {
+        path: '/wegen_fruit/:page',
+        props: { category: 'FRUIT_WEIGHT' },
+        component: () => import('@/components/Menus/PLU/DynamicKassaPLUsMenu.vue')
+    },
+    {
+        path: '/wegen_groente/:page',
+        props: { category: 'VEGETABLE_WEIGHT' },
         component: () => import('@/components/Menus/PLU/DynamicKassaPLUsMenu.vue')
     },
 

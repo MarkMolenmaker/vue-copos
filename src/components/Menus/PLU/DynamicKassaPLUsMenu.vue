@@ -4,7 +4,11 @@
 
 <script>
 import PLUPanel from "@/components/Menus/PLU/PLUPanel.vue";
-import {collectAppleAndPearProductsList, collectBreadProductsList} from "@/util/actions/fetchProductFromAPI";
+import {
+  collectAppleAndPearProductsList,
+  collectBreadProductsList, collectFruitPiecesProductsList,
+  collectFruitWeightProductsList, collectVegetablePiecesProductsList, collectVegetableWeightProductsList
+} from "@/util/actions/fetchProductFromAPI";
 
 export default {
   name: "DynamicKassaPLUsMenu",
@@ -17,6 +21,14 @@ export default {
       collectBreadProductsList().then(res => this.products = res)
     else if (this.category === 'APPLES_AND_PEARS')
       collectAppleAndPearProductsList().then(res => this.products = res)
+    else if (this.category === 'FRUIT_PIECES')
+      collectFruitPiecesProductsList().then(res => this.products = res)
+    else if (this.category === 'FRUIT_WEIGHT')
+      collectFruitWeightProductsList().then(res => this.products = res)
+    else if (this.category === 'VEGETABLE_PIECES')
+      collectVegetablePiecesProductsList().then(res => this.products = res)
+    else if (this.category === 'VEGETABLE_WEIGHT')
+      collectVegetableWeightProductsList().then(res => this.products = res)
   }
 }
 </script>

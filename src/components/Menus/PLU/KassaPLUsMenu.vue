@@ -19,13 +19,13 @@ export default {
         new Button('Non scan menu', 'blue', '/non_scan_menu', 1, 3, 1),
 
         new Button('Broodjes', 'green', '/broodjes/0', 2, 1, 2),
-        new Button('Stuks fruit', 'green', '/stuks_fruit', 2, 3, 2),
+        new Button('Stuks fruit', 'green', '/stuks_fruit/0', 2, 3, 2),
 
-        new Button('Stuks groente', 'green', '/stuks_groente', 3, 1, 2),
+        new Button('Stuks groente', 'green', '/stuks_groente/0', 3, 1, 2),
         new Button('Wegen appels & peren', 'green', '/wegen_appels_en_peren/0', 3, 3, 2),
 
-        new Button('Wegen fruit', 'green', '/wegen_fruit', 4, 1, 2),
-        new Button('Wegen groente', 'green', '/wegen_groente', 4, 3, 2),
+        new Button('Wegen fruit', 'green', '/wegen_fruit/0', 4, 1, 2),
+        new Button('Wegen groente', 'green', '/wegen_groente/0', 4, 3, 2),
 
         new Button('Bier', 'light-blue', '/bier', 5, 1, 1),
         new Button('Telefoon kaarten', 'light-blue', '/telefoon_kaarten', 5, 2, 1),
