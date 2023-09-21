@@ -105,3 +105,4 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 
 ## Bugs
 - [x] Fix `TransactionDetailsInputLine` content updating weirdly after navigating.
+- [ ] Pressing Enter in the final screen causes a NaN on the payment screen.
