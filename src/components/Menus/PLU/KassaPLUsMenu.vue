@@ -22,7 +22,7 @@ export default {
         new Button('Stuks fruit', 'green', '/stuks_fruit', 2, 3, 2),
 
         new Button('Stuks groente', 'green', '/stuks_groente', 3, 1, 2),
-        new Button('Wegen appels & peren', 'green', '/wegen_appels_en_peren', 3, 3, 2),
+        new Button('Wegen appels & peren', 'green', '/wegen_appels_en_peren/0', 3, 3, 2),
 
         new Button('Wegen fruit', 'green', '/wegen_fruit', 4, 1, 2),
         new Button('Wegen groente', 'green', '/wegen_groente', 4, 3, 2),

@@ -102,7 +102,7 @@ export default {
         if (!online) return // @TODO: show popup: ongeldig/onbekend artikel
         this.$store.dispatch('checkout/addEntry', {
           type: 'product',
-          product: new Product(online.sku, online.name, online.listPrice.value),
+          product: new Product(online.attributes[0].value, online.title, online.attributes[1].value.value),
           quantity: 1
         })
       }

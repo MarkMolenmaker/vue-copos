@@ -4,8 +4,8 @@
          v-for="row in buttonGrid" :key="row">
       <div class="button" v-for="product in row" :key="product" :style="{ width: (100 / rowSize) + '%'}">
         <a v-if="product" class="light-blue" @click="action('ADD_PRODUCT', product)">
-          <img v-if="product.images" :src="product.images[0].effectiveUrl" alt="">
-          <span>{{ product.name }}</span>
+          <img v-if="product.attributes.length === 3" :src="product.attributes[2].value" alt="">
+          <span>{{ product.title }}</span>
         </a>
         <a v-else class="empty"></a>
       </div>
@@ -21,7 +21,7 @@
         </a>
       </div>
       <div v-else class="button" :style="{ width: (100 / rowSize) + '%'}"><a class="empty"></a></div>
-      <div v-if="(this.page + 1) * 20 < this.plus.length" class="button" :style="{ width: (100 / rowSize) + '%'}">
+      <div v-if="(this.page + 1) * 20 < this.products.length" class="button" :style="{ width: (100 / rowSize) + '%'}">
         <a class="gray" @click="action('NEXT_PAGE')">
           <img class="overlay" src="../../../assets/icons/secondary_button_arrowright.png" alt="">
         </a>
@@ -40,16 +40,12 @@ export default {
   props: {
     rows: { type: String, required: true },
     rowSize: { type: String, required: true },
-    plus: { type: Array, required: true },
+    products: { type: Array, required: true },
   },
   data () {
     return {
-      products: [],
       page: Number(this.$route.params.page) || 0
     }
-  },
-  mounted() {
-    this.populateGrid()
   },
   methods: {
     action (link, product=null) {
@@ -64,40 +60,21 @@ export default {
         case 'ADD_PRODUCT':
           this.$store.dispatch('checkout/addEntry', {
             type: 'product',
-            product: new Product(product.sku, product.name, product.listPrice.value),
+            product: new Product(product.attributes[0].value, product.title, product.attributes[1].value.value),
             quantity: 1
           })
           break
         case 'NEXT_PAGE':
           this.page++
           this.$router.replace({ name: this.$route.name, params: { page: this.page } })
-          this.products = []
-          this.populateGrid()
           break
         case 'PREVIOUS_PAGE':
           this.page--
           this.$router.replace({ name: this.$route.name, params: { page: this.page } })
-          this.products = []
-          this.populateGrid()
           break
         default:
           break
       }
-    },
-    populateGrid() {
-      // Calc the grid size
-      const size = Number(this.rows) * Number(this.rowSize)
-
-      // Fetch 20 products by sku
-      for (let i = 0; i < size; i++) {
-        const index = this.page * size + i
-        if (index >= this.plus.length) this.products.push(null)
-        else fetchProductBySku(this.plus[index].sku).then(res => {
-          this.products.push(res)
-        })
-      }
-      console.log(this.page)
-      console.log(this.products)
     }
   },
   computed: {
@@ -106,7 +83,7 @@ export default {
       for (let row = 0; row < Number(this.rows); row++) {
         grid.push([])
         for (let pos = 0; pos < Number(this.rowSize); pos++) {
-          grid[row][pos] = this.products[row * this.rowSize + pos]
+          grid[row][pos] = this.products[this.page * this.rows * this.rowSize + row * this.rowSize + pos]
         }
       }
       return grid

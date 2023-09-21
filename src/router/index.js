@@ -12,6 +12,7 @@ const routes = [
     { path: '/supervisor_menu', component: () => import('@/components/Menus/SupervisorMenu.vue') },
     { path: '/kassa_plus', component: () => import('@/components/Menus/PLU/KassaPLUsMenu.vue') },
     { path: '/broodjes/:page', component: () => import('@/components/Menus/PLU/KassaPLUsBroodjesMenu.vue') },
+    { path: '/wegen_appels_en_peren/:page', component: () => import('@/components/Menus/PLU/KassaPLUsAppelsPerenMenu.vue') },
 
     // 404 Not Found
     { path: '/:pathMatch(.*)*', component: NotFoundMenu }

@@ -4,10 +4,10 @@
 
 <script>
 import PLUPanel from "@/components/Menus/PLU/PLUPanel.vue";
-import {collectBreadProductsList} from "@/util/actions/fetchProductFromAPI";
+import {collectAppleAndPearProductsList, collectBreadProductsList} from "@/util/actions/fetchProductFromAPI";
 
 export default {
-  name: "KassaPLUsBroodjesMenu",
+  name: "KassaPLUsAppelsPerenMenu",
   components: {PLUPanel},
   data () {
     return {
@@ -15,7 +15,7 @@ export default {
     }
   },
   mounted() {
-    collectBreadProductsList().then(res => {
+    collectAppleAndPearProductsList().then(res => {
       this.products = res
     })
   }
